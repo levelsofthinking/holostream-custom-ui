@@ -14,6 +14,7 @@
 
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/holostream-custom-ui.css">
 
   <!-- HoloStream Includes -->
   <link rel="stylesheet" href="https://holostream-static.akamaized.net/styles/styles.css">
@@ -24,10 +25,89 @@
 </head>
 
 <body>
+  <script>
+    function initializeScene(holoStreamInstance){
+          let threeObjects = {
+              threeScene: holoStreamInstance.getThreeScene(),
+              threeCanvas: holoStreamInstance.getHoloStreamCanvas(),
+              threeRenderer: holoStreamInstance.getThreeRenderer(),
+              threeCamera: holoStreamInstance.getThreeCamera()
+          };
 
+          let fillColor = new THREE.Color("#aaa");
+          threeObjects.threeScene.background = fillColor;
+          threeObjects.threeScene.fog = new THREE.FogExp2(fillColor, 0.05);
+
+          // Create the light to cast the shadows
+          var light = new THREE.PointLight( 0xffffff, 1, 100 );
+          light.position.set( -10, 10, 10 );
+          light.castShadow = true;
+          light.shadow.mapSize.width = 2048;
+          light.shadow.mapSize.height = 2048;
+
+          threeObjects.threeScene.add( light );
+
+          // Create the surface to receive the shadows
+          var fillGeometry = new THREE.PlaneGeometry(100, 100, 32);
+          fillGeometry.translate(0, 0, 0);
+          fillGeometry.rotateX(-90 / 57.2958);
+
+          var fillMaterial = new THREE.MeshPhongMaterial( {
+              color: new THREE.Color("#444")
+          });
+
+          var fillPlane = new THREE.Mesh( fillGeometry, fillMaterial );
+          fillPlane.receiveShadow = true;
+          threeObjects.threeScene.add( fillPlane );
+
+          // Add camera controls
+          let controls = new THREE.OrbitControls( threeObjects.threeCamera, threeObjects.threeRenderer.domElement );
+          controls.enableDamping = true;
+          controls.dampingFactor = 0.09;
+          controls.enableKeys = true;
+          controls.autoRotate = false;
+          controls.autoRotateSpeed = 2.0;
+          controls.target = new THREE.Vector3(0, 1, 0);
+          controls.maxPolarAngle = Math.PI * .6;
+          controls.minPolarAngle = Math.PI * .25;
+          controls.update();
+    }
+
+
+
+    function onPageLoad()
+    {
+        let holostreamOptions = {
+            debugEnabled: false,
+            targetContainerDivID: "PlayerContainer",
+            hideUI: false
+        }
+
+        holoStream = new HoloStream(holostreamOptions);
+
+        initializeScene(holoStream);
+
+        holoStream.openURL("https://holostream-dev.arcturus.studio/media/23f517e8-a10e-48ae-bc76-8ccde959937d/stream/dash/manifest.mpd");
+    }
+  </script>
   <!-- Add your site or application content here -->
   <div class="holostream-player">
-    Test
+    <div id="PlayerContainer"></div>
+    <div class="holostream-player-controls" height="18">
+      <button class="holostream-play-button" type="button" data-plyr="play" aria-label="Play">
+        <svg class="icon--pressed" role="presentation" focusable="false">
+          <svg class="icon--pressed" role="presentation" focusable="false"><use xlink:href="img/plyr-controls/plyr-pause.svg"></use></svg>
+          <svg class="icon--not-pressed" role="presentation" focusable="false"><use xlink:href="img/plyr-controls/plyr-play.svg"></use></svg>
+        </svg>
+        Play
+      </button>
+      <div class="holostream-player-progress-container">
+        progress
+      </div>
+      <div class="holostream-player-audio-container">
+        audio
+      </div>
+    </div>
   </div>
   <script src="js/vendor/modernizr-3.11.2.min.js"></script>
   <script src="js/plugins.js"></script>
