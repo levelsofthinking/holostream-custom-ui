@@ -1,8 +1,9 @@
 /*! Styling for the a custom UI/UX for the HoloStream  */
 
-.holostream-player-controls {
+.holostream-player-controls-container
+{
   background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
-  -webkit-box-align: center;
+  position: absolute;
   align-items: center;
   bottom: 0;
   color: #fff;
@@ -11,8 +12,22 @@
   position: absolute;
   right: 0;
   display: flex;
-  -webkit-box-pack: end;
   transition: opacity .4s ease-in-out,transform .4s ease-in-out,-webkit-transform .4s ease-in-out;
+  -webkit-box-pack: end;
+  -webkit-box-align: center;
+}
+.holostream-player-controls-container {
+  align-items: center;
+  bottom: 0;
+  color: #fff;
+  left: 0;
+  padding: 35px 10px 10px;
+  position: absolute;
+  right: 0;
+  display: flex;
+  transition: opacity .4s ease-in-out,transform .4s ease-in-out,-webkit-transform .4s ease-in-out;
+  -webkit-box-pack: end;
+  -webkit-box-align: center;
 }
 .holostream-player-progress-container {
     -webkit-box-flex: 1;
@@ -23,4 +38,15 @@
     flex-basis: 0%;
     min-width: 0;
     margin-left: 2.5px;
+}
+.holostream-player-control-item {
+  color: white;
+  fill: white;
+  padding: 0;
+  border: none;
+  font: inherit;
+  background-color: transparent;
+  /* show a hand cursor on hover; some argue that we
+  should keep the default arrow cursor for buttons */
+  cursor: pointer;
 }
