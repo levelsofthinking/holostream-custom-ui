@@ -1,10 +1,12 @@
 /*! Styling for the a custom UI/UX for the HoloStream  */
 
-.holostream-player-controls-container
+.hsp-controls-container
 {
   background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
   position: absolute;
   align-items: center;
+  direction: ltr;
+
   bottom: 0;
   color: #fff;
   left: 0;
@@ -12,34 +14,56 @@
   position: absolute;
   right: 0;
   display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
   transition: opacity .4s ease-in-out,transform .4s ease-in-out,-webkit-transform .4s ease-in-out;
   -webkit-box-pack: end;
   -webkit-box-align: center;
 }
-.holostream-player-controls-container {
-  align-items: center;
-  bottom: 0;
-  color: #fff;
-  left: 0;
-  padding: 35px 10px 10px;
-  position: absolute;
-  right: 0;
-  display: flex;
-  transition: opacity .4s ease-in-out,transform .4s ease-in-out,-webkit-transform .4s ease-in-out;
-  -webkit-box-pack: end;
-  -webkit-box-align: center;
-}
-.holostream-player-progress-container {
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0%;
+
+.hsp-controls-progress-container {
     min-width: 0;
-    margin-left: 2.5px;
+    padding: 0;
+    margin: 0;
+    flex: 1 0 auto;
 }
-.holostream-player-control-item {
+.hsp-progress-item {
+    width: 100%;
+    height: 15px;
+    color: rgba(0,0,0,0.5);
+    position: relative;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    margin-left: -6.5px;
+    margin-right: -6.5px;
+}
+
+.hsp-progress-item::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 7px;
+  cursor: pointer;
+  border: 0px solid #29334f;
+  background: #ddd;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.hsp-progress-item::-moz-range-track {
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+.hsp-progress-item::-ms-fill-lower {
+    background: #777;
+}
+.hsp-progress-item::-ms-fill-upper {
+    background: #ddd;
+}
+.hsp-control-item {
   color: white;
   fill: white;
   padding: 0;
@@ -49,4 +73,8 @@
   /* show a hand cursor on hover; some argue that we
   should keep the default arrow cursor for buttons */
   cursor: pointer;
+}
+
+.hsp-control-item-right {
+  right: 0;
 }
