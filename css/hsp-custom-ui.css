@@ -1,0 +1,232 @@
+/*! Styling for the a custom UI/UX for the HoloStream  */
+
+/*
+  top level container for a holostream player
+  It is positioned relative to the any parent elements
+ */
+.hsp-player-container {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/*
+   The container for the 3js canvas that HoloStream will render into
+ */
+.hsp-viewport-container {
+  position: relative;
+  width: 720px;
+  height: 480px;
+}
+
+# the canvas that the 3js will render into
+#holostreamCanvas {
+  width: 720px;
+  height: 480px;
+}
+
+/*
+  The controls at the bottom of the 3js cameras, this is meant to be include within the same layout as the viewport
+  container so that
+ */
+.hsp-controls-container {
+  position: absolute;
+  bottom: 0px;
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(rgba(1, 0, 0, 0), rgba(1, 1, 0, 0.7));
+  color: #b3d4fc;
+}
+
+.hsp-controls-grid {
+    display: grid;
+    position: relative;
+    grid-template-columns: 18px auto 40px 10% 18px;
+    align-items: center;
+    column-gap: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top:20px;
+    background: transparent;
+}
+
+/* shared styling for all divs that contain controls */
+.hsp-control-container {
+  position: relative;
+  fill: white;
+  padding: 0px;
+  border: none;
+  font: inherit;
+  background-color: transparent;
+  /* show a hand cursor on hover; */
+  cursor: pointer;
+  align-items: center;
+}
+
+/* shared styling for all holostream player controls */
+.hsp-control {
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+/* the container to hold the play pause button */
+.hsp-play-container {
+  /* show a hand cursor on hover; */
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.hsp-player-container::selection {
+  color: #000;
+}
+.hsp-progress-container {
+  background-color: #6e9eb5;
+}
+
+.hsp-time-container {
+  color: white;
+  font-size: 14px;
+  font-family: Avenir,"Avenir Next","Helvetica Neue","Segoe UI",Helvetica,Arial,sans-serif;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 1.7;
+  text-shadow: none;
+  background-color: darkred;
+}
+.hsp-audio-container {
+  background-color: blueviolet;
+}
+.hsp-fullscreen-container {
+  background-color: bisque;
+}
+
+
+
+.hsp-control-play-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+  background: transparent;
+
+}
+.hsp-control-pause-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+  background: transparent;
+}
+
+.hsp-control-audio {
+}
+.hsp-control-audio-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+}
+.hsp-control-audio-mute-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+}
+
+.hsp-control-volume {
+  width: 40px;
+  left: 25px;
+  position: relative;
+  background: transparent;
+}
+.hsp-control-volume::-webkit-slider-runnable-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    height: 5px;
+}
+.hsp-control-volume::-moz-range-progress {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 5px;
+    border-radius: 5px;
+}
+
+.hsp-control-volume::-moz-range-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    height: 5px;
+    border-radius: 5px;
+}
+
+.hsp-control-volume {
+  width: 40px;
+  left: 25px;
+  position: relative;
+  background: transparent;
+}
+.hsp-control-fullscreen {
+
+}
+.hsp-control-maximizeFullScreen-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+}
+.hsp-control-minimizeFullScreen-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+}
+
+.hsp-control-icon-hidden {
+  visibility: hidden;
+}
+
+.hsp-control-icon-visible {
+  visibility: visible;
+}
+
+/* slider for the progress range */
+.hsp-control-progress {
+    margin: auto;
+    -webkit-appearance: none;
+    position: relative;
+    overflow: hidden;
+    height: 20px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 0; /* iOS */
+    background: transparent;
+}
+.hsp-control-progress::-webkit-slider-runnable-track {
+    background-color: #6e9eb5;
+    border-radius: 5px;
+    height: 5px;
+}
+.hsp-control-progress::-moz-range-progress {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 5px;
+    border-radius: 5px;
+}
+
+.hsp-control-progress::-moz-range-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    height: 5px;
+    border-radius: 5px;
+}
+
+

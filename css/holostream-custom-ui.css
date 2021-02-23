@@ -1,18 +1,32 @@
 /*! Styling for the a custom UI/UX for the HoloStream  */
 
+/*
+Top level container, typically a div for a holostream player.
+ */
+.holostream-player-container {
+  background-color: aliceblue;
+  color: #29334f;
+  position: relative;
+}
+
+/*
+Container for the playback controls
+Positioned relative to the bottom of the parent container
+Linear gradient for the background so that controls always stand out over the backdrop
+ */
 .hsp-controls-container
 {
-  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
   position: absolute;
+  float: none;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
   align-items: center;
   direction: ltr;
-
   bottom: 0;
   color: #fff;
   left: 0;
   padding: 20px 5px 5px;
-  position: absolute;
   right: 0;
+  height: 40px;
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
@@ -21,6 +35,57 @@
   -webkit-box-align: center;
 }
 
+/* shared styling for all holostream player controls */
+.hsp-control-item {
+  color: white;
+  fill: white;
+  padding: 0;
+  border: none;
+  font: inherit;
+  background-color: transparent;
+  /* show a hand cursor on hover; */
+  cursor: pointer;
+}
+
+/* custom styling for the holostream play button */
+.hsp-control-play {
+  height: 18;
+  width: 18;
+  left: 10px;
+  fill: white;
+  position: relative;
+
+}
+
+.hsp-control-icon {
+  fill: white;
+  border: #29334f;
+  left: 0px;
+}
+.hsp-control-icon-hidden {
+  visibility: hidden;
+}
+
+.hsp-control-icon-visible {
+  visibility: visible;
+}
+
+/* currently unused for styling but exposed here in you want custom styling */
+.hsp-control-play-icon {
+  left: 0px;
+};
+.hsp-control-pause-icon {
+  left: 0px;
+};
+
+.hsp-progress-container {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  flex: 1 0 auto;
+  background-color: #555555;
+  color: red;
+}
 .hsp-controls-progress-container {
     min-width: 0;
     padding: 0;
@@ -63,17 +128,7 @@
 .hsp-progress-item::-ms-fill-upper {
     background: #ddd;
 }
-.hsp-control-item {
-  color: white;
-  fill: white;
-  padding: 0;
-  border: none;
-  font: inherit;
-  background-color: transparent;
-  /* show a hand cursor on hover; some argue that we
-  should keep the default arrow cursor for buttons */
-  cursor: pointer;
-}
+
 
 .hsp-control-item-right {
   right: 0;

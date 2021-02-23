@@ -1,0 +1,38 @@
+/*! A basic layout example of a grid.  */
+
+/*
+Padding settings to achieve specific aspect ratios
+ Aspect ratio  |  padding-bottom  |  for 30% width
+------------------------------------------------
+    1:1        |  = width         |    30%
+    1:2        |  width x 2       |    60%
+    2:1        |  width x 0.5     |    15%
+    4:3        |  width x 0.75    |    22.5%
+    16:9       |  width x 0.5625  |    16.875%
+ */
+
+p {
+  margin: 2rem;
+  padding-left: 10px;
+}
+
+.arc-grid {
+    display: grid;
+    margin: 2rem;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: #29334f;
+    position: relative;
+}
+
+.arc-grid-cell {
+    background-color: #dddddd;
+    padding: 0px;
+    margin: 0px;
+    position: relative;
+}
+.arc-grid-content {
+  position: absolute;
+  display: inline-block;
+  width: 720px;
+  height: 480px;
+}
