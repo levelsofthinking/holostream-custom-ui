@@ -1,6 +1,6 @@
 // A collection of javascript functions for working with custom holostream player controllers
 
-function togglePlay(hspPlayer)
+function togglePlay()
 {
   const playIcon = document.querySelector('.hsp-control-play-icon');
   const pauseIcon = document.querySelector('.hsp-control-pause-icon');
@@ -11,13 +11,14 @@ function togglePlay(hspPlayer)
       playIcon.classList.add('hsp-control-icon-hidden');
       pauseIcon.classList.remove('hsp-control-icon-hidden');
       pauseIcon.classList.add('hsp-control-icon-visible');
+      holoStream.handlePlay(true);
   } else {
       pauseIcon.classList.remove("hsp-control-icon-visible");
       pauseIcon.classList.add('hsp-control-icon-hidden');
       playIcon.classList.remove('hsp-control-icon-hidden');
       playIcon.classList.add('hsp-control-icon-visible');
+      holoStream.handlePlay(false);
   }
-  console.log("They pressed the play button");
 }
 function toggleAudioMuted(hspPlayer)
 {
