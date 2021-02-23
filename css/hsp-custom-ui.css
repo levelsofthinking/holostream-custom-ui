@@ -45,9 +45,9 @@
 .hsp-controls-grid {
     display: grid;
     position: relative;
-    grid-template-columns: 18px auto 40px 10% 18px;
+    grid-template-columns: 18px auto 40px 78px 18px;
     align-items: center;
-    column-gap: 20px;
+    column-gap: 15px;
     padding-left: 20px;
     padding-right: 20px;
     padding-top:20px;
@@ -75,6 +75,14 @@
   flex-shrink: 0;
   overflow: visible;
 }
+/* classes used to toggle visibility of icons */
+.hsp-control-icon-hidden {
+  visibility: hidden;
+}
+
+.hsp-control-icon-visible {
+  visibility: visible;
+}
 
 /* the container to hold the play pause button */
 .hsp-play-container {
@@ -83,11 +91,7 @@
   background-color: transparent;
 }
 
-.hsp-player-container::selection {
-  color: #000;
-}
 .hsp-progress-container {
-  background-color: #6e9eb5;
 }
 
 .hsp-time-container {
@@ -95,20 +99,18 @@
   font-size: 14px;
   font-family: Avenir,"Avenir Next","Helvetica Neue","Segoe UI",Helvetica,Arial,sans-serif;
   text-align: center;
+  text-justify: auto;
   font-variant-numeric: tabular-nums;
   font-weight: 500;
   line-height: 1.7;
   text-shadow: none;
-  background-color: darkred;
+  padding-bottom: 9px;
 }
+
 .hsp-audio-container {
-  background-color: blueviolet;
 }
 .hsp-fullscreen-container {
-  background-color: bisque;
 }
-
-
 
 .hsp-control-play-icon {
   left: 0px;
@@ -128,27 +130,94 @@
   background: transparent;
 }
 
-.hsp-control-audio {
+/* slider for the progress range */
+.hsp-control-progress {
+    margin: auto;
+    -webkit-appearance: none;
+    position: relative;
+    overflow: hidden;
+    height: 20px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 0; /* iOS */
+    background: transparent;
 }
+.hsp-control-progress::-webkit-slider-runnable-track {
+    background: #fff;
+    border: 0;
+    border-radius: 100%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(35, 41, 47, 0.2);
+    height: 13px;
+    position: relative;
+    -moz-transition: all .2s ease;
+    transition: all .2s ease;
+    width: 13px;
+}
+.hsp-control-progress::-moz-range-progress {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 5px;
+    border-radius: 2.5px;
+    outline: 0;
+    user-select: none;
+}
+
+.hsp-control-progress::-moz-range-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    height: 5px;
+    border-radius: 5px;
+}
+
+.hsp-control-progress::-moz-range-thumb {
+    background: #fff;
+    border: 1px;
+    border-radius: 16px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(35, 41, 47, 0.2);
+    position: relative;
+    transition: all .2s ease;
+    height: 16px;
+    width: 16px;
+}
+/* a two column grid for the audio control */
+.hsp-audio-grid {
+    display: grid;
+    margin: 0px;
+    padding: 0px;
+    grid-template-columns: 18px auto;
+    position: relative;
+    align-items: center;
+    left: 0px;
+    grid-column-gap: 8px;
+}
+.hsp-audio-grid-cell {
+    width: auto;
+    padding: 0px;
+    margin: 0px;
+}
+
+.hsp-control-audio {
+  background: transparent;
+}
+
 .hsp-control-audio-icon {
   left: 0px;
-  bottom: 5px;
+  bottom: 8px;
   position: absolute;
   alignment: left;
   align-items: center;
+  background: transparent;
 }
 .hsp-control-audio-mute-icon {
   left: 0px;
-  bottom: 5px;
+  bottom: 8px;
   position: absolute;
   alignment: left;
   align-items: center;
+  background: transparent;
 }
 
 .hsp-control-volume {
-  width: 40px;
-  left: 25px;
-  position: relative;
+  width: 60px;
+  bottom: 4px;
   background: transparent;
 }
 .hsp-control-volume::-webkit-slider-runnable-track {
@@ -164,69 +233,40 @@
 
 .hsp-control-volume::-moz-range-track {
     background-color: rgba(255, 255, 255, 0.25);
-    height: 5px;
-    border-radius: 5px;
+    border-radius: 2.5px;
+    outline: 0;
+  transition: box-shadow .3s ease;
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+}
+.hsp-control-volume::-moz-range-thumb {
+  height: 12px;
+  width: 12px;
 }
 
-.hsp-control-volume {
-  width: 40px;
-  left: 25px;
-  position: relative;
-  background: transparent;
-}
+
 .hsp-control-fullscreen {
 
 }
 .hsp-control-maximizeFullScreen-icon {
-  left: 0px;
+  left: 5px;
   bottom: 5px;
   position: absolute;
   alignment: left;
   align-items: center;
 }
 .hsp-control-minimizeFullScreen-icon {
-  left: 0px;
+  left: 5px;
   bottom: 5px;
   position: absolute;
   alignment: left;
   align-items: center;
 }
 
-.hsp-control-icon-hidden {
-  visibility: hidden;
-}
 
-.hsp-control-icon-visible {
-  visibility: visible;
-}
 
-/* slider for the progress range */
-.hsp-control-progress {
-    margin: auto;
-    -webkit-appearance: none;
-    position: relative;
-    overflow: hidden;
-    height: 20px;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 0; /* iOS */
-    background: transparent;
-}
-.hsp-control-progress::-webkit-slider-runnable-track {
-    background-color: #6e9eb5;
-    border-radius: 5px;
-    height: 5px;
-}
-.hsp-control-progress::-moz-range-progress {
-    background-color: rgba(0, 0, 0, 0.5);
-    height: 5px;
-    border-radius: 5px;
-}
 
-.hsp-control-progress::-moz-range-track {
-    background-color: rgba(255, 255, 255, 0.25);
-    height: 5px;
-    border-radius: 5px;
-}
 
 
