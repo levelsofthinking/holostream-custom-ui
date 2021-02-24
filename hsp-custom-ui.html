@@ -42,7 +42,11 @@
         /* always ensure the progress element defaults to start */
         let hspProgressElement = document.getElementById("hsp-control-progress");
         hspProgressElement.value = 0;
-        hspProgressElement.addEventListener("input", handleProgressDrag)
+        hspProgressElement.addEventListener("input", handleProgressDrag);
+
+        let hspAudioElement = document.getElementById("hsp-control-volume");
+        hspAudioElement.addEventListener("input", handleAudioControlDrag);
+
         holoStream.postUpdateFunctions.push({
           update: () => {
             handleHoloStreamUpdate("videoPlayer", "hsp-control-progress", "hsp-time-container");
@@ -97,7 +101,7 @@
                             </button>
                           </div>
                           <div class="hsp-audio-grid-cell" width="30px">
-                            <input type="range" min=0 max=1 step="0.05" value=.5 autocomplete="off" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55.00000000000001" id="plyr-volume-222" style="--value:55.00000000000001%;" aria-valuetext="55.0%" class="hsp-control-volume hsp-control" width="30px">
+                            <input type="range" min=0 max=1 step=0.05 value=.5 autocomplete="off" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55.00000000000001"  style="--value:55.00000000000001%;" aria-valuetext="55.0%" class="hsp-control-volume hsp-control" id="hsp-control-volume" width="30px" >
                           </div>
                         </div>
                       </div>

@@ -38,16 +38,27 @@ function toggleAudioMuted(hspPlayer)
 
 function muteAudio(audioOnIcon, audioMuteIcon)
 {
-    
+    let volumeControl = document.getElementById("hsp-control-volume");
+    let videoPlayer = document.getElementById("videoPlayer");
+
+    hspCurrentAudioVolume = volumeControl.value;
+    videoPlayer.volume = 0;
+    volumeControl.value = 0;
     audioOnIcon.classList.remove("hsp-control-icon-visible");
     audioOnIcon.classList.add('hsp-control-icon-hidden');
     audioMuteIcon.classList.remove('hsp-control-icon-hidden');
     audioMuteIcon.classList.add('hsp-control-icon-visible');
-    hspMute = false;
+    hspMute = true;
 
 }
 function unMuteAudio(audioOnIcon, audioMuteIcon)
 {
+      let volumeControl = document.getElementById("hsp-control-volume");
+      let videoPlayer = document.getElementById("videoPlayer");
+
+      volumeControl.value = hspCurrentAudioVolume;
+      videoPlayer.volume = hspCurrentAudioVolume;
+
       audioMuteIcon.classList.remove("hsp-control-icon-visible");
       audioMuteIcon.classList.add('hsp-control-icon-hidden');
       audioOnIcon.classList.remove('hsp-control-icon-hidden');
@@ -55,6 +66,21 @@ function unMuteAudio(audioOnIcon, audioMuteIcon)
       hspMute = false;
 }
 
+function handleAudioControlDrag()
+{
+  let videoPlayer = document.getElementById("videoPlayer");
+  let volumeControl = document.getElementById("hsp-control-volume");
+  videoPlayer.volume = volumeControl.value;
+
+  const audioOnIcon = document.querySelector('.hsp-control-audio-icon');
+  const audioMuteIcon = document.querySelector('.hsp-control-audio-mute-icon');
+  if ((hspMute == false) && (volumeControl.value == 0)) {
+      muteAudio(audioOnIcon, audioMuteIcon)
+  }
+  if ((hspMute == true) && (volumeControl.value != 0)) {
+      unMuteAudio(audioOnIcon, audioMuteIcon)
+  }
+}
 function toggleFullScreen(fullScreenElement)
 {
   const maximizeFullScreenIcon = document.querySelector('.hsp-control-maximizeFullScreen-icon');
