@@ -17,7 +17,7 @@
 
     <!-- HoloStream Includes -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js" type="application/javascript"></script>
-    <script src="https://holostream-static.akamaized.net/release/2020.4.4/remote/HoloStream-2020.4.4.min.js" type="application/javascript"></script>
+    <script src="https://holostream-static.akamaized.net/release/2020.4.4.1/remote/HoloStream-2020.4.4.1.min.js" type="application/javascript"></script>
     <!-- Example specific utility functions -->
     <script src="/js/hsp-controls.js" type="application/javascript"></script>
     <script src="/js/hsp-scene-utils.js" type="application/javascript"></script>
@@ -26,21 +26,31 @@
   </head>
   <body onload="onPageLoad()">
     <script>
-      function onPageLoad()
-      {
-          let holostreamOptions = {
-              debugEnabled: false,
-              targetContainerDivID: "hsp-viewport-container",
-              hideUI: true
+      function onPageLoad() {
+        let holostreamOptions = {
+          debugEnabled: false,
+          targetContainerDivID: "hsp-viewport-container",
+          hideUI: true
+        }
+
+        holoStream = new HoloStream(holostreamOptions);
+
+        initializeScene(holoStream);
+
+        holoStream.openURL("https://holostream-dev.arcturus.studio/media/23f517e8-a10e-48ae-bc76-8ccde959937d/stream/dash/manifest.mpd");
+
+        /* always ensure the progress element defaults to start */
+        let hspProgressElement = document.getElementById("hsp-control-progress");
+        hspProgressElement.value = 0;
+        hspProgressElement.addEventListener("input", handleProgressDrag)
+        holoStream.postUpdateFunctions.push({
+          update: () => {
+            handleHoloStreamUpdate("videoPlayer", "hsp-control-progress", "hsp-time-container");
           }
+        });
 
-          holoStream = new HoloStream(holostreamOptions);
-
-          initializeScene(holoStream);
-
-          holoStream.openURL("https://holostream-dev.arcturus.studio/media/23f517e8-a10e-48ae-bc76-8ccde959937d/stream/dash/manifest.mpd");
-          console.log(holoStream);
       }
+
     </script>
     <div>
       <p>
@@ -49,7 +59,7 @@
     </div>
     <div class="arc-grid">
       <div class="arc-grid-cell">
-        <p>This is a sample of an embeded player with a custom UI</p>
+        <p>This is a sample of an embedded player with a custom UI</p>
       </div>
       <div class = "arc-grid-cell">
           <div class="hsp-player-container">
@@ -68,9 +78,9 @@
                           </button>
                       </div>
                       <div class="hsp-progress-container hsp-control-container">
-                        <input type="range" class="hsp-control-progress hsp-control">
+                        <input type="range" class="hsp-control-progress hsp-control" id="hsp-control-progress" min="0" max="1" step="0.05" value="0">
                       </div>
-                      <div class="hsp-time-container hsp-control-container">
+                      <div class="hsp-time-container hsp-control-container" id="hsp-time-container">
                         -00:10
                       </div>
                       <div class="hsp-audio-container hsp-control-container">
@@ -87,7 +97,7 @@
                             </button>
                           </div>
                           <div class="hsp-audio-grid-cell" width="30px">
-                            <input type="range" min="0" max="1" step="0.05" value="1" autocomplete="off" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55.00000000000001" id="plyr-volume-222" style="--value:55.00000000000001%;" aria-valuetext="55.0%" class="hsp-control-volume hsp-control" width="30px">
+                            <input type="range" min=0 max=1 step="0.05" value=.5 autocomplete="off" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55.00000000000001" id="plyr-volume-222" style="--value:55.00000000000001%;" aria-valuetext="55.0%" class="hsp-control-volume hsp-control" width="30px">
                           </div>
                         </div>
                       </div>

@@ -1,5 +1,8 @@
 // A collection of javascript functions for working with custom holostream player controllers
 
+let hspCurrentAudioVolume;
+let hspMute = false;
+
 function togglePlay()
 {
   const playIcon = document.querySelector('.hsp-control-play-icon');
@@ -27,17 +30,29 @@ function toggleAudioMuted(hspPlayer)
 
   const audioOnStyle = getComputedStyle(audioOnIcon);
   if (audioOnStyle['visibility'] == "visible") {
-      audioOnIcon.classList.remove("hsp-control-icon-visible");
-      audioOnIcon.classList.add('hsp-control-icon-hidden');
-      audioMuteIcon.classList.remove('hsp-control-icon-hidden');
-      audioMuteIcon.classList.add('hsp-control-icon-visible');
+      muteAudio(audioOnIcon, audioMuteIcon)
   } else {
+      unMuteAudio(audioOnIcon, audioMuteIcon)
+  }
+}
+
+function muteAudio(audioOnIcon, audioMuteIcon)
+{
+    
+    audioOnIcon.classList.remove("hsp-control-icon-visible");
+    audioOnIcon.classList.add('hsp-control-icon-hidden');
+    audioMuteIcon.classList.remove('hsp-control-icon-hidden');
+    audioMuteIcon.classList.add('hsp-control-icon-visible');
+    hspMute = false;
+
+}
+function unMuteAudio(audioOnIcon, audioMuteIcon)
+{
       audioMuteIcon.classList.remove("hsp-control-icon-visible");
       audioMuteIcon.classList.add('hsp-control-icon-hidden');
       audioOnIcon.classList.remove('hsp-control-icon-hidden');
       audioOnIcon.classList.add('hsp-control-icon-visible');
-  }
-  console.log("They pressed the toggle mute button");
+      hspMute = false;
 }
 
 function toggleFullScreen(fullScreenElement)
@@ -57,15 +72,21 @@ function toggleFullScreen(fullScreenElement)
       maximizeFullScreenIcon.classList.remove('hsp-control-icon-hidden');
       maximizeFullScreenIcon.classList.add('hsp-control-icon-visible');
   }
-  console.log("They pressed the toggle full screen button");
-  _toggleFullscreen(document.querySelector(fullScreenElement));
+  let fsElem = document.querySelector(fullScreenElement);
+  _toggleFullscreen(fsElem);
+  let canvas = holoStream.getHoloStreamCanvas();
+  let viewPortContainer = document.querySelector('.hsp-viewport-container');
+
+  viewPortContainer.width = canvas.width = fsElem.clientWidth; //document.width is obsolete
+  viewPortContainer.height = canvas.height = fsElem.clientHeight; //document.height is obsolete
+
+  holoStream.handleResize();
 }
 
 /* cross browser toggle full screen command */
 function _toggleFullscreen(elem) {
-  console.log("entered _toggleFullScreen");
   elem = elem || document.documentElement;
-  console.log(elem);
+
   if (!document.fullscreenElement && !document.mozFullScreenElement &&
     !document.webkitFullscreenElement && !document.msFullscreenElement) {
     if (elem.requestFullscreen) {
@@ -88,4 +109,41 @@ function _toggleFullscreen(elem) {
       document.webkitExitFullscreen();
     }
   }
+}
+
+/* called after each HoloStream Update to update the UI/UX */
+function handleHoloStreamUpdate(elementID, progressSlider, timeElement)
+{
+    let videoPlayer = document.getElementById(elementID);
+    let progressElem = document.getElementById(progressSlider);
+    let timeElem = document.getElementById(timeElement);
+    progressElem.max = videoPlayer.duration;
+    progressElem.value = videoPlayer.currentTime;
+    timeElem.innerText = convertSecondsToMinsSecondsString(videoPlayer.duration,videoPlayer.currentTime);
+}
+
+function handleProgressDrag()
+{
+  let videoPlayer = document.getElementById("videoPlayer");
+  let progressElem = document.getElementById("hsp-control-progress");
+  videoPlayer.currentTime = progressElem.value;
+}
+
+function getHoloStreamDuration(elementID)
+{
+  let videoPlayer = document.getElementById(elementID);
+  return videoPlayer.duration;
+}
+
+function getHoloStreamCurrentTime(elementID)
+{
+  let videoPlayer = document.getElementById(elementID);
+  return videoPlayer.currentTime;
+}
+
+function convertSecondsToMinsSecondsString(totalClipDuration,seconds)
+{
+  var countDown = Math.abs(seconds-totalClipDuration);
+  var minutes = Math.round(countDown / 60);
+  return "-"+minutes.toString().padStart(2,"0") + ":" + Math.floor((countDown % 60)).toString().padStart(2,"0");
 }
