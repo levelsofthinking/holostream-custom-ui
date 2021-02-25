@@ -124,7 +124,6 @@ The hsp player is the canvas + the controller,
 
 }
 
-
 /* sets the thumb for chrome, firefox, edge */
 .hsp-control-seek::-webkit-slider-thumb {
   background-color: rgba(255, 255, 255, 1);
@@ -148,17 +147,18 @@ The hsp player is the canvas + the controller,
 
 /* sets the track for firefox */
 .hsp-control-seek::-webkit-slider-runnable-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    height: 6px;
     border-radius: 5px;
-    height: 5px;
+    border: none;
     cursor: pointer;
-    //box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-   // background: rgba(148, 141, 141, 0.25);
-    background-image: linear-gradient(90deg, #f2f2f2 var(--webkitProgressPercent), #262626 var(--webkitProgressPercent));
-    border-radius: 2px;
+    transition: box-shadow .3s ease;
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
 }
-.hsp-control-seek:focus::-webkit-slider-runnable-track {
-  background: rgba(0, 0, 0, 0.25);
-}
+
 .hsp-control-seek::-moz-range-progress {
     background-color: rgba(0,0,0,.50);
     height: 6px;
@@ -178,24 +178,36 @@ The hsp player is the canvas + the controller,
     transition-timing-function: ease;
     transition-delay: 0s;
 }
+
+.hsp-control-seek::-ms-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    height: 6px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: box-shadow .3s ease;
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+}
+
 .hsp-control-seek::-ms-fill-lower {
   background: yellow;
-  border: 0.2px solid #010101;
-  border-radius: 2.6px;
+  height: 6px;
+  border-radius: 5px;
+  border: none;
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
-.hsp-control-seek:focus::-ms-fill-lower {
-  background: green;
-}
+
 .hsp-control-seek::-ms-fill-upper {
   background: rgba(0,0,0,.5);
-  border: 0.2px solid #010101;
-  border-radius: 2.6px;
+    height: 6px;
+    border-radius: 5px;
+    border: none;
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
-.hsp-control-seek:focus::-ms-fill-upper {
-  background: blue;
-}
+
 /* a two column grid for the audio control */
 .hsp-audio-grid {
     display: grid;
@@ -263,7 +275,7 @@ The hsp player is the canvas + the controller,
   border-radius: 50%;
   background: white;
   cursor: pointer;
-  margin-top: -3px; /* adjust position of thumb in chrome, and opera */
+  margin-top: -5px; /* adjust position of thumb in chrome, and opera */
 }
 
 /* sets the thumb for firefox */
