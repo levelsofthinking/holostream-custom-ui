@@ -84,6 +84,7 @@ function toggleAudioEnabled(hspPlayer)
     volumeControl.value = hspCurrentAudioVolume;
     toggleVisibility(audioEnabledIcon, audioDisabledIcon);
   }
+  updateProgressStyle(volumeControl);
 }
 
 function handleAudioControlDrag()
