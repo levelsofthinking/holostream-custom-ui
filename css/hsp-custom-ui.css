@@ -1,4 +1,5 @@
 
+
 /*
   top level container for a holostream player
   a holostream player consists of
@@ -113,15 +114,13 @@ The hsp player is the canvas + the controller,
 /* range slider for the seek control */
 .hsp-control-seek {
   -webkit-appearance: none; /* get rid of all web kit styles so that we have uniform appearance of slider */
-  --seekProgressPercent: 60%;
   width: 100%;
-  height: 20px;
-  bottom: 4px;
+  height: 6px;
+  bottom: 30px;
   background: transparent;
   cursor: pointer;
-  border-radius: 0; /* iOS */
+  border-radius: 5px; /* iOS */
   color: rgba(0, 0, 0, 0.5);
-
 }
 
 /* sets the thumb for chrome, firefox, edge */
@@ -142,10 +141,9 @@ The hsp player is the canvas + the controller,
   width: 14px;
   height: 14px;
   margin: 0px; /* override webkit-slider-thumb in edge */
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(35, 41, 47, 0.2);
 }
 
-/* sets the track for firefox */
+/* sets the track for chrome */
 .hsp-control-seek::-webkit-slider-runnable-track {
     background-color: rgba(255, 255, 255, 0.25);
     height: 6px;
@@ -157,6 +155,13 @@ The hsp player is the canvas + the controller,
     transition-duration: 0.3s;
     transition-timing-function: ease;
     transition-delay: 0s;
+}
+
+.hsp-control-seek::-webkit-slider-progress {
+    background-color: rgba(0,0,0,.50);
+    height: 6px;
+    border-radius: 5px;
+    border: none;
 }
 
 .hsp-control-seek::-moz-range-progress {
@@ -202,9 +207,9 @@ The hsp player is the canvas + the controller,
 
 .hsp-control-seek::-ms-fill-upper {
   background: rgba(0,0,0,.5);
-    height: 6px;
-    border-radius: 5px;
-    border: none;
+  height: 6px;
+  border-radius: 5px;
+  border: none;
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
 
@@ -253,7 +258,7 @@ The hsp player is the canvas + the controller,
   font-weight: 500;
   line-height: 1.7;
   text-shadow: none;
-  padding-bottom: 9px;
+  padding-bottom: 7px;
 }
 /* range slider to control volume */
 .hsp-control-volume {

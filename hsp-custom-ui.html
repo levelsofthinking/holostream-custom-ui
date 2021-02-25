@@ -110,7 +110,8 @@
                   </button>
                 </div>
                 <div class="hsp-control-container">
-                  <input type="range" class="hsp-control-seek hsp-control" id="hsp-control-seek" min="0" max="1" step="0.05" value="0">
+                  <input type="range" class="hsp-control-seek hsp-control" id="hsp-control-seek" min="0" max="1" step="0.05" value="0"
+                    oninput="updateProgressStyle(this)">
                 </div>
                 <div class="hsp-time-container hsp-control-container" id="hsp-time-container">-00:00</div>
                 <div class="hsp-control-container">
@@ -170,8 +171,6 @@
      <h3>Known Issues</h3>
       <ui>
         <li>The toggle full screen button takes the top level player element full screen but the canvas doesn't expand to fill. Working on a fix.</li>
-        <li>The volume control slider in chrome and edge has the same color on either side of the thumb control</li>
-        <li>Need to slightly tweek the styling on the color and thickness of the slider controls</li>
        </ul>
    </div>
  </div>

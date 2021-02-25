@@ -3,18 +3,17 @@
 let hspCurrentAudioVolume = 0.5;
 let hspMute = false;
 
-
-
-
-
-
-/* below here is verified */
-
 function handleSeekDrag()
 {
   let videoPlayer = document.getElementById("videoPlayer");
   let seekElem = document.getElementById("hsp-control-seek");
   videoPlayer.currentTime = seekElem.value;
+}
+
+/* because chrome doesn't support styling input sliders we use a javascript to style the background of the slider */
+function updateProgressStyle(sliderElement) {
+  const  value = (sliderElement.value-sliderElement.min)/(sliderElement.max-sliderElement.min)*100;
+  sliderElement.style.background = 'linear-gradient(to right, #5d5a5e 0%, #5d5a5e ' + value + '%, #aeaeae ' + value + '%, #aeaeae)'
 }
 
 /* called after each HoloStream Update to update the UI/UX */
@@ -26,6 +25,7 @@ function handleHoloStreamUpdate(videoPlayerID, seekSliderID, timeFieldID)
     seekSlider.max = videoPlayer.duration;
     seekSlider.value = videoPlayer.currentTime;
     timeField.innerText = convertSecondsToMinsSecondsString(videoPlayer.duration,videoPlayer.currentTime);
+    updateProgressStyle(seekSlider);
 }
 
 function getHoloStreamDuration(elementID)
