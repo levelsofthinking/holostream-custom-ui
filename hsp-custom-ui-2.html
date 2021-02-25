@@ -50,10 +50,24 @@
         initializeScene(holoStream);
 
         holoStream.openURL("https://holostream-dev.arcturus.studio/media/23f517e8-a10e-48ae-bc76-8ccde959937d/stream/dash/manifest.mpd");
+        /* add callback to the holoStream Render loop so that we know everytime a frame has advanced */
+        holoStream.postUpdateFunctions.push({
+          update: () => {
+            handleHoloStreamUpdate("videoPlayer", "hsp-control-seek", "hsp-time-container");
+          }
+        });
 
         /* update audio on the holostream playback when the user drags the volume control */
         let hspAudioElement = document.getElementById("hsp-control-volume");
         hspAudioElement.addEventListener("input", handleAudioControlDrag);
+
+        let hspSeekElement = document.getElementById("hsp-control-seek");
+        /* always ensure the seek element defaults to start */
+        hspSeekElement.value = 0;
+        /* respond to drag events on the seek input */
+        hspSeekElement.addEventListener("input", handleSeekDrag);
+
+        document.onfullscreenchange = updateHoloStreamCanvasAfterParentSizeChange;
       }
  </script>
 <h1 align="center">Sample Volumetric Video Player with HTML Controls</h1>
@@ -84,8 +98,10 @@
                     </svg>
                   </button>
                 </div>
-                <div class="hsp-control-container">video seek</div>
-                <div class="hsp-control-container">-00:00</div>
+                <div class="hsp-control-container">
+                  <input type="range" class="hsp-control-seek hsp-control" id="hsp-control-seek" min="0" max="1" step="0.05" value="0">
+                </div>
+                <div class="hsp-time-container hsp-control-container" id="hsp-time-container">-00:00</div>
                 <div class="hsp-control-container">
                   <div class="hsp-audio-grid">
                     <div class="hsp-audio-grid-cell">
@@ -141,8 +157,9 @@
             <ul>Not yet</ul>
          </p>
      <h3>Known Issues</h3>
-      <ul>The toggle full screen button takes the top level player element full screen but the canvas doesn't expand to fill. Working on a fix.</ul>
-      <ul>The volume control slider in chrome and edge has the same color on either side of the thumb control</ul>
+      <li>
+        <li>The toggle full screen button takes the top level player element full screen but the canvas doesn't expand to fill. Working on a fix.</li>
+        <li>The volume control slider in chrome and edge has the same color on either side of the thumb control</li>
        </ul>
    </div>
  </div>

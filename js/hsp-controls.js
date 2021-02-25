@@ -4,83 +4,28 @@ let hspCurrentAudioVolume = 0.5;
 let hspMute = false;
 
 
-function toggleAudioMuted(hspPlayer)
-{
-  const audioOnIcon = document.querySelector('.hsp-control-audio-icon');
-  const audioMuteIcon = document.querySelector('.hsp-control-audio-mute-icon');
 
-  const audioOnStyle = getComputedStyle(audioOnIcon);
-  if (audioOnStyle['visibility'] == "visible") {
-      muteAudio(audioOnIcon, audioMuteIcon)
-  } else {
-      unMuteAudio(audioOnIcon, audioMuteIcon)
-  }
-}
 
-function muteAudio(audioOnIcon, audioMuteIcon)
-{
-    let volumeControl = document.getElementById("hsp-control-volume");
-    let videoPlayer = document.getElementById("videoPlayer");
 
-    hspCurrentAudioVolume = volumeControl.value;
-    videoPlayer.volume = 0;
-    volumeControl.value = 0;
-    audioOnIcon.classList.remove("hsp-control-icon-visible");
-    audioOnIcon.classList.add('hsp-control-icon-hidden');
-    audioMuteIcon.classList.remove('hsp-control-icon-hidden');
-    audioMuteIcon.classList.add('hsp-control-icon-visible');
-    hspMute = true;
 
-}
-function unMuteAudio(audioOnIcon, audioMuteIcon)
-{
-      let volumeControl = document.getElementById("hsp-control-volume");
-      let videoPlayer = document.getElementById("videoPlayer");
+/* below here is verified */
 
-      volumeControl.value = hspCurrentAudioVolume;
-      videoPlayer.volume = hspCurrentAudioVolume;
-
-      audioMuteIcon.classList.remove("hsp-control-icon-visible");
-      audioMuteIcon.classList.add('hsp-control-icon-hidden');
-      audioOnIcon.classList.remove('hsp-control-icon-hidden');
-      audioOnIcon.classList.add('hsp-control-icon-visible');
-      hspMute = false;
-}
-
-function handleAudioControlDrag()
+function handleSeekDrag()
 {
   let videoPlayer = document.getElementById("videoPlayer");
-  let volumeControl = document.getElementById("hsp-control-volume");
-  videoPlayer.volume = volumeControl.value;
-
-  const audioOnIcon = document.querySelector('.hsp-control-audio-icon');
-  const audioMuteIcon = document.querySelector('.hsp-control-audio-mute-icon');
-  if ((hspMute == false) && (volumeControl.value == 0)) {
-      muteAudio(audioOnIcon, audioMuteIcon)
-  }
-  if ((hspMute == true) && (volumeControl.value != 0)) {
-      unMuteAudio(audioOnIcon, audioMuteIcon)
-  }
+  let seekElem = document.getElementById("hsp-control-seek");
+  videoPlayer.currentTime = seekElem.value;
 }
-
-
 
 /* called after each HoloStream Update to update the UI/UX */
-function handleHoloStreamUpdate(elementID, progressSlider, timeElement)
+function handleHoloStreamUpdate(videoPlayerID, seekSliderID, timeFieldID)
 {
-    let videoPlayer = document.getElementById(elementID);
-    let progressElem = document.getElementById(progressSlider);
-    let timeElem = document.getElementById(timeElement);
-    progressElem.max = videoPlayer.duration;
-    progressElem.value = videoPlayer.currentTime;
-    timeElem.innerText = convertSecondsToMinsSecondsString(videoPlayer.duration,videoPlayer.currentTime);
-}
-
-function handleProgressDrag()
-{
-  let videoPlayer = document.getElementById("videoPlayer");
-  let progressElem = document.getElementById("hsp-control-progress");
-  videoPlayer.currentTime = progressElem.value;
+    let videoPlayer = document.getElementById(videoPlayerID);
+    let seekSlider = document.getElementById(seekSliderID);
+    let timeField = document.getElementById(timeFieldID);
+    seekSlider.max = videoPlayer.duration;
+    seekSlider.value = videoPlayer.currentTime;
+    timeField.innerText = convertSecondsToMinsSecondsString(videoPlayer.duration,videoPlayer.currentTime);
 }
 
 function getHoloStreamDuration(elementID)
@@ -102,23 +47,6 @@ function convertSecondsToMinsSecondsString(totalClipDuration,seconds)
   return "-"+minutes.toString().padStart(2,"0") + ":" + Math.floor((countDown % 60)).toString().padStart(2,"0");
 }
 
-
-function updateHoloStreamCanvasAfterParentSizeChange()
-{
-  console.log("We got an update");
-  let fsElem = document.querySelector('.hsp-player-container');
-  console.log(fsElem.clientWidth);
-  console.log(fsElem.clientWidth);
-  let canvas = holoStream.getHoloStreamCanvas();
-  let viewPortContainer = document.querySelector('.hsp-viewport-container');
-  viewPortContainer.clientWidth = canvas.width = fsElem.clientWidth; //document.width is obsolete
-  viewPortContainer.clientHeight = canvas.height = fsElem.clientHeight; //document.height is obsolete
-  holoStream.handleResize();
-
-}
-
-
-/* below here is verified */
 /* starts and stops playback */
 function togglePlay()
 {
@@ -220,6 +148,17 @@ function _toggleFullscreen(elem) {
       document.webkitExitFullscreen();
     }
   }
+}
+
+/* toggling full screen is ayschnronis so you need a call back once the change has completed */
+function updateHoloStreamCanvasAfterParentSizeChange()
+{
+  let fsElem = document.querySelector('.hsp-player');
+  let canvas = holoStream.getHoloStreamCanvas();
+  let viewPortContainer = document.querySelector('.hsp-viewport-container');
+  viewPortContainer.clientWidth = canvas.width = fsElem.clientWidth; //document.width is obsolete
+  viewPortContainer.clientHeight = canvas.height = fsElem.clientHeight; //document.height is obsolete
+  holoStream.handleResize();
 }
 
 /* adjusts the class list to toggle one element hidden and the other visible*/

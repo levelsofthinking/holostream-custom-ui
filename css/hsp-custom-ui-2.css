@@ -63,7 +63,7 @@ The hsp player is the canvas + the controller,
 
 .hsp-control-container {
   position: relative;
-  color: purple;
+  color: white;
   fill: white;
 }
 
@@ -71,6 +71,8 @@ The hsp player is the canvas + the controller,
 .hsp-control {
   border: none;
   border-radius: 3px;
+  background: transparent;
+  color: #fff;
   cursor: pointer;
   flex-shrink: 0;
   overflow: visible;
@@ -83,6 +85,11 @@ The hsp player is the canvas + the controller,
   opacity: 1;
   color: white;
 }
+.hsp-control-play {
+  background: transparent;
+  border: none;
+}
+
 .hsp-control-play-icon {
   left: 0px;
   bottom: 5px;
@@ -100,7 +107,86 @@ The hsp player is the canvas + the controller,
   align-items: center;
   background: transparent;
 }
+/* range slider for the seek control */
+.hsp-control-seek {
+  -webkit-appearance: none; /* get rid of all web kit styles so that we have uniform appearance of slider */
+  width: 100%;
+  height: 20px;
+  bottom: 4px;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0; /* iOS */
+}
 
+
+/* sets the thumb for chrome, firefox, edge */
+.hsp-control-seek::-webkit-slider-thumb {
+  background-color: rgba(255, 255, 255, 1);
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  margin-top: -5px; /* adjust position of thumb in chrome, and opera */
+}
+
+/* sets the thumb for firefox */
+.hsp-control-seek::-moz-range-thumb {
+  background-color: rgba(255, 255, 255, 1);
+  width: 14px;
+  height: 14px;
+  margin: 0px; /* override webkit-slider-thumb in edge */
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(35, 41, 47, 0.2);
+}
+
+/* sets the track for firefox */
+.hsp-control-seek::-webkit-slider-runnable-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    height: 5px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 2px;
+}
+.hsp-control-seek:focus::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, 0.25);
+}
+.hsp-control-seek::-moz-range-progress {
+    background-color: rgba(0, 0, 0, 0.25);
+    height: 5px;
+    border-radius: 5px;
+}
+
+.hsp-control-seek::-moz-range-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: box-shadow .3s ease;
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+}
+.hsp-control-seek::-ms-fill-lower {
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+.hsp-control-seek:focus::-ms-fill-lower {
+  background: rgba(0, 0, 0, 0.5);
+}
+.hsp-control-seek::-ms-fill-upper {
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+.hsp-control-seek:focus::-ms-fill-upper {
+  background: rgba(0, 0, 0, 0.5);
+}
 /* a two column grid for the audio control */
 .hsp-audio-grid {
     display: grid;
@@ -136,6 +222,18 @@ The hsp player is the canvas + the controller,
   background: transparent;
 }
 
+.hsp-time-container {
+  color: white;
+  font-size: 14px;
+  font-family: Avenir,"Avenir Next","Helvetica Neue","Segoe UI",Helvetica,Arial,sans-serif;
+  text-align: center;
+  text-justify: auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 1.7;
+  text-shadow: none;
+  padding-bottom: 9px;
+}
 /* range slider to control volume */
 .hsp-control-volume {
   -webkit-appearance: none; /* get rid of all web kit styles so that we have uniform appearance of slider */
@@ -146,7 +244,6 @@ The hsp player is the canvas + the controller,
   cursor: pointer;
   border-radius: 0; /* iOS */
 }
-
 
 /* sets the thumb for chrome, firefox, edge */
 .hsp-control-volume::-webkit-slider-thumb {

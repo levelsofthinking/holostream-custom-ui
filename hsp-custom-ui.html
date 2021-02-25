@@ -39,10 +39,11 @@
 
         holoStream.openURL("https://holostream-dev.arcturus.studio/media/23f517e8-a10e-48ae-bc76-8ccde959937d/stream/dash/manifest.mpd");
 
-        /* always ensure the progress element defaults to start */
-        let hspProgressElement = document.getElementById("hsp-control-progress");
-        hspProgressElement.value = 0;
-        hspProgressElement.addEventListener("input", handleProgressDrag);
+        let hspSeekElement = document.getElementById("hsp-control-seek");
+        /* always ensure the seek element defaults to start */
+
+        hspSeekElement.value = 0;
+        hspSeekElement.addEventListener("input", handleSeekDrag);
 
         let hspAudioElement = document.getElementById("hsp-control-volume");
         hspAudioElement.addEventListener("input", handleAudioControlDrag);
