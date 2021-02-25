@@ -70,13 +70,17 @@ The hsp player is the canvas + the controller,
 
 /* shared styling for all holostream player controls */
 .hsp-control {
-  border: 0;
+  border: none;
   border-radius: 3px;
   cursor: pointer;
   flex-shrink: 0;
   overflow: visible;
 }
 
+.hsp-control:hover span:after {
+  opacity: 1;
+  color: white;
+}
 
 /* specific positioning for the maximize and minimze icons */
 .hsp-control-maximizeFullScreen-icon {

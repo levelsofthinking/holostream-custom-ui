@@ -81,80 +81,7 @@ function handleAudioControlDrag()
       unMuteAudio(audioOnIcon, audioMuteIcon)
   }
 }
-function toggleFullScreen(fullScreenElement)
-{
-  const maximizeFullScreenIcon = document.querySelector('.hsp-control-maximizeFullScreen-icon');
-  const minimizeFullScreenIcon = document.querySelector('.hsp-control-minimizeFullScreen-icon');
 
-  const maximizeFullScreenIconStyle = getComputedStyle(maximizeFullScreenIcon);
-  if (maximizeFullScreenIconStyle['visibility'] == "visible") {
-      maximizeFullScreenIcon.classList.remove("hsp-control-icon-visible");
-      maximizeFullScreenIcon.classList.add('hsp-control-icon-hidden');
-      minimizeFullScreenIcon.classList.remove('hsp-control-icon-hidden');
-      minimizeFullScreenIcon.classList.add('hsp-control-icon-visible');
-  } else {
-      minimizeFullScreenIcon.classList.remove("hsp-control-icon-visible");
-      minimizeFullScreenIcon.classList.add('hsp-control-icon-hidden');
-      maximizeFullScreenIcon.classList.remove('hsp-control-icon-hidden');
-      maximizeFullScreenIcon.classList.add('hsp-control-icon-visible');
-  }
-  let fsElem = document.querySelector(fullScreenElement);
-  _toggleFullscreen(fsElem);
-  let canvas = holoStream.getHoloStreamCanvas();
-  let viewPortContainer = document.querySelector('.hsp-viewport-container');
-
-  console.log(fsElem);
-
-  console.log(fsElem.clientWidth);
-  console.log(fsElem.clientHeight);
-
-  viewPortContainer.clientWidth = canvas.clientWidth = fsElem.clientWidth; //document.width is obsolete
-  viewPortContainer.clientHeight = canvas.clientHeight = fsElem.clientHeight; //document.height is obsolete
-
-  holoStream.handleResize();
-}
-
-function updateHoloStreamCanvasAfterParentSizeChange()
-{
-  console.log("We got an update");
-  let fsElem = document.querySelector('.hsp-player-container');
-  console.log(fsElem.clientWidth);
-  console.log(fsElem.clientWidth);
-  let canvas = holoStream.getHoloStreamCanvas();
-  let viewPortContainer = document.querySelector('.hsp-viewport-container');
-  viewPortContainer.clientWidth = canvas.width = fsElem.clientWidth; //document.width is obsolete
-  viewPortContainer.clientHeight = canvas.height = fsElem.clientHeight; //document.height is obsolete
-  holoStream.handleResize();
-
-}
-
-/* cross browser toggle full screen command */
-function _toggleFullscreen(elem) {
-  elem = elem || document.documentElement;
-
-  if (!document.fullscreenElement && !document.mozFullScreenElement &&
-    !document.webkitFullscreenElement && !document.msFullscreenElement) {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-    }
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
-  }
-}
 
 
 /* called after each HoloStream Update to update the UI/UX */
@@ -195,7 +122,68 @@ function convertSecondsToMinsSecondsString(totalClipDuration,seconds)
 }
 
 
+function updateHoloStreamCanvasAfterParentSizeChange()
+{
+  console.log("We got an update");
+  let fsElem = document.querySelector('.hsp-player-container');
+  console.log(fsElem.clientWidth);
+  console.log(fsElem.clientWidth);
+  let canvas = holoStream.getHoloStreamCanvas();
+  let viewPortContainer = document.querySelector('.hsp-viewport-container');
+  viewPortContainer.clientWidth = canvas.width = fsElem.clientWidth; //document.width is obsolete
+  viewPortContainer.clientHeight = canvas.height = fsElem.clientHeight; //document.height is obsolete
+  holoStream.handleResize();
+
+}
+
+
 /* below here is verified */
+function toggleFullScreen(fullScreenElement)
+{
+  const maximizeFullScreenIcon = document.querySelector('.hsp-control-maximizeFullScreen-icon');
+  const minimizeFullScreenIcon = document.querySelector('.hsp-control-minimizeFullScreen-icon');
+
+  /* check to see if we are in full screen */
+  const maximizeFullScreenIconStyle = getComputedStyle(maximizeFullScreenIcon);
+  /* if the maximize icon is visible, then we are not in full screen mode */
+  if (maximizeFullScreenIconStyle['visibility'] == "visible") {
+      toggleVisibility(minimizeFullScreenIcon, maximizeFullScreenIcon);
+  } else {
+      toggleVisibility(maximizeFullScreenIcon, minimizeFullScreenIcon);
+  }
+  let fsElem = document.querySelector(fullScreenElement);
+  _toggleFullscreen(fsElem); /* this size change is asynchronous so you must use a call back on the toggle fullscreen function if you depend on knowing the new element dimensions after the resize */
+}
+
+
+
+/* cross browser toggle full screen command */
+function _toggleFullscreen(elem) {
+  elem = elem || document.documentElement;
+
+  if (!document.fullscreenElement && !document.mozFullScreenElement &&
+    !document.webkitFullscreenElement && !document.msFullscreenElement) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+}
 
 /* adjusts the class list to toggle one element hidden and the other visible*/
 function toggleVisibility(elementToShow, elementToHide)
