@@ -135,9 +135,10 @@ The hsp player is the canvas + the controller,
   width: 14px;
   height: 14px;
   border-radius: 50%;
+  border: none;
   background: white;
   cursor: pointer;
-  margin-top: -5px; /* adjust position of thumb in chrome, and opera */
+  margin-top: -4px; /* adjust position of thumb in chrome, and opera */
 }
 
 /* sets the thumb for firefox */
@@ -288,9 +289,10 @@ The hsp player is the canvas + the controller,
   width: 14px;
   height: 14px;
   border-radius: 50%;
+  border: none;
   background: white;
   cursor: pointer;
-  margin-top: -5px; /* adjust position of thumb in chrome, and opera */
+  margin-top: -4px; /* adjust position of thumb in chrome, and opera */
 }
 
 /* sets the thumb for firefox */
