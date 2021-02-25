@@ -215,9 +215,15 @@
 }
 
 .hsp-control-volume {
-  width: 60px;
-  bottom: 4px;
-  background: transparent;
+  -webkit-appearance: none;
+    bottom: 4px;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+    height: 20px;
+    cursor: pointer;
+    border-radius: 0; /* iOS */
+    background: transparent;
 }
 .hsp-control-volume::-webkit-slider-runnable-track {
     background-color: rgba(255, 255, 255, 0.25);

@@ -52,7 +52,7 @@ The hsp player is the canvas + the controller,
 .hsp-controls-grid {
     display: grid;
     position: relative;
-    grid-template-columns: 18px auto 50px 78px 18px;
+    grid-template-columns: 18px auto 50px 85px 18px;
     align-items: center;
     column-gap: 15px;
     padding-left: 20px;
@@ -64,7 +64,6 @@ The hsp player is the canvas + the controller,
 .hsp-control-container {
   position: relative;
   color: purple;
-  background-color: #b3d4fc;
   fill: white;
 }
 
@@ -76,13 +75,124 @@ The hsp player is the canvas + the controller,
   flex-shrink: 0;
   overflow: visible;
 }
+.hsp-control:focus {
+  outline: none;
+}
 
 .hsp-control:hover span:after {
   opacity: 1;
   color: white;
 }
+.hsp-control-play-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+  background: transparent;
 
-/* specific positioning for the maximize and minimze icons */
+}
+.hsp-control-pause-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+  background: transparent;
+}
+
+/* a two column grid for the audio control */
+.hsp-audio-grid {
+    display: grid;
+    margin: 0px;
+    padding: 0px;
+    grid-template-columns: 18px auto;
+    position: relative;
+    align-items: center;
+    left: 0px;
+    grid-column-gap: 8px;
+}
+.hsp-audio-grid-cell {
+    width: auto;
+    padding: 0px;
+    margin: 0px;
+}
+
+.hsp-control-audio-enabled-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+  background: transparent;
+}
+
+.hsp-control-audio-disabled-icon {
+  left: 0px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+  background: transparent;
+}
+
+/* range slider to control volume */
+.hsp-control-volume {
+  -webkit-appearance: none; /* get rid of all web kit styles so that we have uniform appearance of slider */
+  width: 60px;
+  height: 20px;
+  bottom: 4px;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0; /* iOS */
+}
+
+
+/* sets the thumb for chrome, firefox, edge */
+.hsp-control-volume::-webkit-slider-thumb {
+  background-color: rgba(255, 255, 255, 1);
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  margin-top: -3px; /* adjust position of thumb in chrome, and opera */
+}
+
+/* sets the thumb for firefox */
+.hsp-control-volume::-moz-range-thumb {
+  background-color: rgba(255, 255, 255, 1);
+  height: 10px;
+  width: 10px;
+  margin: 0px; /* override webkit-slider-thumb in edge */
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(35, 41, 47, 0.2);
+}
+
+/* sets the track for firefox */
+.hsp-control-volume::-webkit-slider-runnable-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    height: 5px;
+}
+
+.hsp-control-volume::-moz-range-progress {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 5px;
+    border-radius: 5px;
+}
+
+.hsp-control-volume::-moz-range-track {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    transition: box-shadow .3s ease;
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+}
+
+/* specific positioning for the maximize and minimize icons */
 .hsp-control-maximizeFullScreen-icon {
   left: 5px;
   bottom: 5px;

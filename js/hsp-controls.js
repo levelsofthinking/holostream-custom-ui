@@ -1,28 +1,9 @@
 // A collection of javascript functions for working with custom holostream player controllers
 
-let hspCurrentAudioVolume;
+let hspCurrentAudioVolume = 0.5;
 let hspMute = false;
 
-function togglePlay()
-{
-  const playIcon = document.querySelector('.hsp-control-play-icon');
-  const pauseIcon = document.querySelector('.hsp-control-pause-icon');
 
-  const playStyle = getComputedStyle(playIcon);
-  if (playStyle['visibility'] == "visible") {
-      playIcon.classList.remove("hsp-control-icon-visible");
-      playIcon.classList.add('hsp-control-icon-hidden');
-      pauseIcon.classList.remove('hsp-control-icon-hidden');
-      pauseIcon.classList.add('hsp-control-icon-visible');
-      holoStream.handlePlay(true);
-  } else {
-      pauseIcon.classList.remove("hsp-control-icon-visible");
-      pauseIcon.classList.add('hsp-control-icon-hidden');
-      playIcon.classList.remove('hsp-control-icon-hidden');
-      playIcon.classList.add('hsp-control-icon-visible');
-      holoStream.handlePlay(false);
-  }
-}
 function toggleAudioMuted(hspPlayer)
 {
   const audioOnIcon = document.querySelector('.hsp-control-audio-icon');
@@ -138,6 +119,64 @@ function updateHoloStreamCanvasAfterParentSizeChange()
 
 
 /* below here is verified */
+/* starts and stops playback */
+function togglePlay()
+{
+  const playIcon = document.querySelector('.hsp-control-play-icon');
+  const pauseIcon = document.querySelector('.hsp-control-pause-icon');
+
+  const playStyle = getComputedStyle(playIcon);
+  if (playStyle['visibility'] == "visible") {
+      toggleVisibility(pauseIcon, playIcon);
+      holoStream.handlePlay(true);
+  } else {
+      toggleVisibility(playIcon, pauseIcon);
+      holoStream.handlePlay(false);
+  }
+}
+
+
+/* turns on and off audio simultaniously adjusting the position of the volueme control */
+function toggleAudioEnabled(hspPlayer)
+{
+  const audioEnabledIcon = document.querySelector('.hsp-control-audio-enabled-icon');
+  const audioDisabledIcon = document.querySelector('.hsp-control-audio-disabled-icon');
+  const volumeControl = document.getElementById("hsp-control-volume");
+  const videoPlayer = document.getElementById("videoPlayer");
+
+  const audioEnabledStyle = getComputedStyle(audioEnabledIcon);
+  if (audioEnabledStyle['visibility'] == "visible") {
+    hspCurrentAudioVolume = volumeControl.value;
+    videoPlayer.volume = 0;
+    volumeControl.value = 0;
+    hspMute = true;
+    toggleVisibility(audioDisabledIcon, audioEnabledIcon);
+  } else {
+    videoPlayer.volume = hspCurrentAudioVolume;
+    volumeControl.value = hspCurrentAudioVolume;
+    toggleVisibility(audioEnabledIcon, audioDisabledIcon);
+  }
+}
+
+function handleAudioControlDrag()
+{
+  const videoPlayer = document.getElementById("videoPlayer");
+  const volumeControl = document.getElementById("hsp-control-volume");
+  videoPlayer.volume = volumeControl.value;
+
+  const audioEnabledIcon = document.querySelector('.hsp-control-audio-enabled-icon');
+  const audioDisabledIcon = document.querySelector('.hsp-control-audio-disabled-icon');
+
+  if ((hspMute == false) && (volumeControl.value == 0)) {
+        toggleVisibility(audioDisabledIcon, audioEnabledIcon);
+        hspMute = true;
+  }
+  if ((hspMute == true) && (volumeControl.value != 0)) {
+      toggleVisibility(audioEnabledIcon, audioDisabledIcon);
+      hspMute=false;
+  }
+}
+
 function toggleFullScreen(fullScreenElement)
 {
   const maximizeFullScreenIcon = document.querySelector('.hsp-control-maximizeFullScreen-icon');
@@ -154,8 +193,6 @@ function toggleFullScreen(fullScreenElement)
   let fsElem = document.querySelector(fullScreenElement);
   _toggleFullscreen(fsElem); /* this size change is asynchronous so you must use a call back on the toggle fullscreen function if you depend on knowing the new element dimensions after the resize */
 }
-
-
 
 /* cross browser toggle full screen command */
 function _toggleFullscreen(elem) {
