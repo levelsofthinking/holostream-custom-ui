@@ -30,8 +30,8 @@ The hsp player is the canvas + the controller,
 }
 
 #hsp-viewport-container {
-  width: 720px;
-  height: 480px;
+  width: 100%;
+  height: 100%;
 }
 
 /*

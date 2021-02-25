@@ -75,6 +75,10 @@
 <p>
   This page illustrates a simple instance of the HoloStream player where the controls are all implemented using standard html inputs.
 </p>
+ <p>
+        To test this demo on a local machine open a terminal in the holostream-custom-ui folder and run: python pyserver.py
+        You will then be able to access the host at: http://localhost:8080/hsp-custom-ui.html
+ </p>
  <!-- standard three column layout -->
  <div class="arc-grid">
    <div class="arc-grid-cell">
@@ -88,10 +92,7 @@
               <li>hcp-controls.js -- some javascript functions used to connect the player and the html controls</li>
               <li>hcp-scene-utils.js -- helpful 3.js code for initializing the 3.js environment </li>
           </ol></p>
-          <p>
-            To test this demo on a local machine open a terminal in the holostream-custom-ui folder and run: python python/SimpleServer.py
-            You will then be able to access the host with: <br></br><br>http://localhost:8000/hsp-custom-ui.html</br>
-          </p>
+
    </div>
    <div class="arc-grid-cell">
         <!-- the main div containing the holostream three.js canvas (the viewport) and the html controls used for user control -->
@@ -156,8 +157,7 @@
         </div>
    </div>
    <div class="arc-grid-cell">
-       <p>
-       This example has been tested on the following browsers:
+     <h3>This example has been tested on the following browsers:</h3>
        <ul>
          <li>Windows:</li>
          <ul>
@@ -167,11 +167,23 @@
            <li>Opera</li>
          </ul>
             <li>OSX:</li>
-            <ul>Not yet</ul>
-         </p>
+            <ul>
+              <li>Chrome</li>
+              <li>Firefox</li>
+              <li>Opera</li>
+            </ul>
+         <li>IOS:</li>
+            <ul>
+              <li>Chrome -- ipad</li>
+              <li>Chrome -- iphone</li>
+              <li>Safari -- ipad</li>
+              <li>Safari -- iphone</li>
+            </ul>
+
      <h3>Known Issues</h3>
       <ui>
-        <li>The toggle full screen button takes the top level player element full screen but the canvas doesn't expand to fill. Working on a fix.</li>
+        <li>Mac -- Safari, the mesh renders black safari version 14.0.3 macos big sur 11.2.1</li>
+        <li>iOS Ipad -- chrome/safari, the styling of the thumb controls for the seek and volume slider could use a small adjustment</li>
        </ul>
    </div>
  </div>
