@@ -13,7 +13,7 @@ function handleSeekDrag()
 /* because chrome doesn't support styling input sliders we use a javascript to style the background of the slider */
 function updateProgressStyle(sliderElement) {
   const  value = (sliderElement.value-sliderElement.min)/(sliderElement.max-sliderElement.min)*100;
-  sliderElement.style.background = 'linear-gradient(to right, #5d5a5e 0%, #5d5a5e ' + value + '%, #aeaeae ' + value + '%, #aeaeae)'
+  sliderElement.style.background = 'linear-gradient(to right, #5d5a5e 0%, #5d5a5e ' + value + '%, #aeaeae ' + value + '%, #aeaeae 100%)'
 }
 
 /* called after each HoloStream Update to update the UI/UX */

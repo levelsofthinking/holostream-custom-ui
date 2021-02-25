@@ -111,6 +111,11 @@ The hsp player is the canvas + the controller,
   align-items: center;
   background: transparent;
 }
+
+/* because of how height offsets work with sliders we need to slightly offset the slider container from the bottom */
+.hsp-control-seek-container {
+    bottom: 5px;
+}
 /* range slider for the seek control */
 .hsp-control-seek {
   -webkit-appearance: none; /* get rid of all web kit styles so that we have uniform appearance of slider */
@@ -260,15 +265,20 @@ The hsp player is the canvas + the controller,
   text-shadow: none;
   padding-bottom: 7px;
 }
+
+/* because of how height offsets work with sliders we need to slightly offset the slider container from the bottom */
+.hsp-control-volume-container {
+    bottom: 6px;
+}
 /* range slider to control volume */
 .hsp-control-volume {
   -webkit-appearance: none; /* get rid of all web kit styles so that we have uniform appearance of slider */
   width: 60px;
-  height: 20px;
+  height: 6px;
   bottom: 4px;
-  background: transparent;
+  background: 'linear-gradient(to right, #5d5a5e 0%, #5d5a5e 50%, #aeaeae 50%, #aeaeae 100%)';
   cursor: pointer;
-  border-radius: 0; /* iOS */
+  border-radius: 6px; /* iOS */
 }
 
 /* sets the thumb for chrome, firefox, edge */
@@ -296,7 +306,7 @@ The hsp player is the canvas + the controller,
 .hsp-control-volume::-webkit-slider-runnable-track {
     background-color: rgba(255, 255, 255, 0.25);
     border-radius: 5px;
-    height: 5px;
+    height: 6px;
 }
 
 .hsp-control-volume::-moz-range-progress {
