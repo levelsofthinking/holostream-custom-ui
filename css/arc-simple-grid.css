@@ -30,7 +30,7 @@ p {
     margin: 0px;
     position: relative;
 }
-.arc-grid-content {
+.arc-grid-cell-content {
   position: absolute;
   display: inline-block;
   width: 720px;

@@ -52,7 +52,7 @@
             handleHoloStreamUpdate("videoPlayer", "hsp-control-progress", "hsp-time-container");
           }
         });
-
+        document.onfullscreenchange = updateHoloStreamCanvasAfterParentSizeChange;
       }
 
     </script>

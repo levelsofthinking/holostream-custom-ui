@@ -1,7 +1,10 @@
 /*! Some universal styles for cleaning up display.  */
 
+body {
+    font-family: 'Open Sans', sans-serif;
+}
 
 p {
-    padding: 2rem;
+    padding: 5px;
     margin: 5px;
 }

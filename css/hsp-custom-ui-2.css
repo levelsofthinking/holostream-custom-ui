@@ -1,0 +1,111 @@
+
+/*
+  top level container for a holostream player
+  a holostream player consists of
+    a viewport (the 3js camera)
+    a controls group that contains the overlaid controls
+
+  It is positioned relative to the any parent elements
+ */
+.hsp-player-container {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/*
+The hsp player is the canvas + the controller,
+ */
+
+.hsp-player {
+  position: relative;
+  width: 720px;
+  height: 480px;
+}
+
+#hsp-viewport-container {
+  width: 720px;
+  height: 480px;
+}
+
+/*
+  The controls at the bottom of the 3js cameras, this is meant to be include within the same layout as the viewport
+  container so that we can use absolute positioning to put floating over the main canvas
+ */
+.hsp-controls-container {
+  position: absolute;
+  bottom: 0px;
+  padding: 0px;
+  margin: 0px;
+  width: 100%; /* make sure our control bar always stretches across the full width of our viewport */
+  height: 60px;
+  background: linear-gradient(rgba(1, 0, 0, 0), rgba(1, 1, 0, 0.7));
+}
+
+/*
+  a five column layout with the second column set to fill the range -- designed specifically for the playback controls
+  that consist of:
+      <play/pause button> <seek control> <time counter> <audio mute & volume slider> <full screen button>
+ */
+.hsp-controls-grid {
+    display: grid;
+    position: relative;
+    grid-template-columns: 18px auto 50px 78px 18px;
+    align-items: center;
+    column-gap: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top:20px;
+    background: transparent;
+}
+
+.hsp-control-container {
+  position: relative;
+  color: purple;
+  background-color: #b3d4fc;
+  fill: white;
+}
+
+/* shared styling for all holostream player controls */
+.hsp-control {
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+
+/* specific positioning for the maximize and minimze icons */
+.hsp-control-maximizeFullScreen-icon {
+  left: 5px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+}
+.hsp-control-minimizeFullScreen-icon {
+  left: 5px;
+  bottom: 5px;
+  position: absolute;
+  alignment: left;
+  align-items: center;
+}
+
+/* custom image styling applied to any svg elements used to represent an icon */
+.hsp-icon {
+  fill: white;
+}
+/* We use these clases to hide and show elements on the page */
+.hsp-hide-element {
+  visibility: hidden;
+}
+
+.hsp-display-element {
+  visibility: visible;
+}
+
+
+

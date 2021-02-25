@@ -16,7 +16,6 @@
    The container for the 3js canvas that HoloStream will render into
  */
 .hsp-viewport-container {
-  position: relative;
   width: 720px;
   height: 480px;
 }

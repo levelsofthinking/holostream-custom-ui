@@ -1,0 +1,107 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <!-- Reset styling across browsers -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- Some custom styling now that everything is reset across browsers -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" href="css/arc-demo-style.css">
+
+
+
+    <!-- HoloStream Includes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js" type="application/javascript"></script>
+    <script src="https://holostream-static.akamaized.net/release/2020.4.4.1/remote/HoloStream-2020.4.4.1.min.js" type="application/javascript"></script>
+
+    <!-- scene managment scripts -->
+    <script src="/js/hsp-scene-utils.js" type="application/javascript"></script>
+    <!-- Specific html styling for the UI of the HoloStream Player Elements -->
+    <link rel="stylesheet" href="css/hsp-custom-ui-2.css">
+    <!-- simple grid layout with css -->
+    <link rel="stylesheet" href="css/arc-simple-grid.css">
+
+  </head>
+<body onload="onPageLoad()">
+ <script>
+      function onPageLoad() {
+        let holostreamOptions = {
+          debugEnabled: false,
+          targetContainerDivID: "hsp-viewport-container",
+          hideUI: true
+        }
+
+        holoStream = new HoloStream(holostreamOptions);
+
+        initializeScene(holoStream);
+
+        holoStream.openURL("https://holostream-dev.arcturus.studio/media/23f517e8-a10e-48ae-bc76-8ccde959937d/stream/dash/manifest.mpd");
+      }
+ </script>
+<h1 align="center">Sample Volumetric Video Player with HTML Controls</h1>
+<p>
+  This page illustrates a simple instance of the HoloStream player where the controls are all implemented using standard html inputs.
+</p>
+ <!-- standard three column layout -->
+ <div class="arc-grid">
+   <div class="arc-grid-cell">
+          <p>
+            In this example the HoloStream player is placed in the middle column of a traditional 3 column layout.
+          </p>
+   </div>
+   <div class="arc-grid-cell">
+        <!-- the main div containing the holostream three.js canvas (the viewport) and the html controls used for user control -->
+        <div class="hsp-player">
+            <!-- the div that the holostream instance will automatically add a three.js camera inside of -->
+            <div class="hsp-viewport-container" id = "hsp-viewport-container"></div>
+            <div class="hsp-controls-container">
+              <div class="hsp-controls-grid">
+                <div class="hsp-control-container">PL</div>
+                <div class="hsp-control-container">video seek</div>
+                <div class="hsp-control-container">-00:00</div>
+                <div class="hsp-control-container">audio</div>
+                <div class="hsp-control-container">
+                  <button class = "hsp-fullscreen-control hsp-control">
+                    <svg class="hsp-control-maximizeFullScreen-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                      <use xlink:href="/img/hsp-controls/plyr-enter-fullscreen.svg#plyr-enter-fullscreen"></use>
+                    </svg>
+                    <svg class="hsp-hide-element hsp-control-minimizeFullScreen-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                      <use xlink:href="/img/hsp-controls/plyr-exit-fullscreen.svg#plyr-exit-fullscreen"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+        </div>
+   </div>
+   <div class="arc-grid-cell">
+       <p>
+       This example has been tested on the following browsers:
+       <ul>
+         <li>Windows:</li>
+         <ul>
+           <li>Firefox</li>
+           <li>Chrome</li>
+           <li>Microsoft Edge</li>
+           <li>Opera</li>
+         </ul>
+            <li>OSX:</li>
+            <ul>Not yet</ul>
+         </p>
+       </ul>
+   </div>
+ </div>
+
+</body>
+</html>

@@ -103,10 +103,29 @@ function toggleFullScreen(fullScreenElement)
   let canvas = holoStream.getHoloStreamCanvas();
   let viewPortContainer = document.querySelector('.hsp-viewport-container');
 
-  viewPortContainer.width = canvas.width = fsElem.clientWidth; //document.width is obsolete
-  viewPortContainer.height = canvas.height = fsElem.clientHeight; //document.height is obsolete
+  console.log(fsElem);
+
+  console.log(fsElem.clientWidth);
+  console.log(fsElem.clientHeight);
+
+  viewPortContainer.clientWidth = canvas.clientWidth = fsElem.clientWidth; //document.width is obsolete
+  viewPortContainer.clientHeight = canvas.clientHeight = fsElem.clientHeight; //document.height is obsolete
 
   holoStream.handleResize();
+}
+
+function updateHoloStreamCanvasAfterParentSizeChange()
+{
+  console.log("We got an update");
+  let fsElem = document.querySelector('.hsp-player-container');
+  console.log(fsElem.clientWidth);
+  console.log(fsElem.clientWidth);
+  let canvas = holoStream.getHoloStreamCanvas();
+  let viewPortContainer = document.querySelector('.hsp-viewport-container');
+  viewPortContainer.clientWidth = canvas.width = fsElem.clientWidth; //document.width is obsolete
+  viewPortContainer.clientHeight = canvas.height = fsElem.clientHeight; //document.height is obsolete
+  holoStream.handleResize();
+
 }
 
 /* cross browser toggle full screen command */
@@ -136,6 +155,7 @@ function _toggleFullscreen(elem) {
     }
   }
 }
+
 
 /* called after each HoloStream Update to update the UI/UX */
 function handleHoloStreamUpdate(elementID, progressSlider, timeElement)
@@ -172,4 +192,16 @@ function convertSecondsToMinsSecondsString(totalClipDuration,seconds)
   var countDown = Math.abs(seconds-totalClipDuration);
   var minutes = Math.round(countDown / 60);
   return "-"+minutes.toString().padStart(2,"0") + ":" + Math.floor((countDown % 60)).toString().padStart(2,"0");
+}
+
+
+/* below here is verified */
+
+/* adjusts the class list to toggle one element hidden and the other visible*/
+function toggleVisibility(elementToShow, elementToHide)
+{
+   elementToHide.classList.remove("hsp-display-element");
+   elementToHide.classList.add('hsp-hide-element');
+   elementToShow.classList.remove('hsp-hide-element');
+   elementToShow.classList.add('hsp-display-element');
 }
