@@ -11,21 +11,33 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
 
-    <!-- reset styling across browsers -->
+    <!-- Reset styling across browsers -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+
+    <!-- Some custom styling now that everything is reset across browsers -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" href="css/arc-demo-style.css">
+
+
 
     <!-- HoloStream Includes -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js" type="application/javascript"></script>
     <script src="https://holostream-static.akamaized.net/release/2020.4.4.1/remote/HoloStream-2020.4.4.1.min.js" type="application/javascript"></script>
-    <!-- Example specific utility functions -->
-    <script src="/js/hsp-controls.js" type="application/javascript"></script>
+
+    <!-- scene management scripts -->
     <script src="/js/hsp-scene-utils.js" type="application/javascript"></script>
+    <!-- specific scripts used to control the holostream player from the custom ui implmented in this page -->
+    <script src="/js/hsp-controls.js" type="application/javascript"></script>
+
+    <!-- Specific html styling for the UI of the HoloStream Player Elements -->
     <link rel="stylesheet" href="css/hsp-custom-ui.css">
+    <!-- simple grid layout with css -->
     <link rel="stylesheet" href="css/arc-simple-grid.css">
+
   </head>
-  <body onload="onPageLoad()">
-    <script>
+<body onload="onPageLoad()">
+ <script>
       function onPageLoad() {
         let holostreamOptions = {
           debugEnabled: false,
@@ -38,93 +50,131 @@
         initializeScene(holoStream);
 
         holoStream.openURL("https://holostream-dev.arcturus.studio/media/23f517e8-a10e-48ae-bc76-8ccde959937d/stream/dash/manifest.mpd");
+        /* add callback to the holoStream Render loop so that we know everytime a frame has advanced */
+        holoStream.postUpdateFunctions.push({
+          update: () => {
+            handleHoloStreamUpdate("videoPlayer", "hsp-control-seek", "hsp-time-container");
+          }
+        });
 
-        let hspSeekElement = document.getElementById("hsp-control-seek");
-        /* always ensure the seek element defaults to start */
-
-        hspSeekElement.value = 0;
-        hspSeekElement.addEventListener("input", handleSeekDrag);
-
+        /* update audio on the holostream playback when the user drags the volume control */
         let hspAudioElement = document.getElementById("hsp-control-volume");
         hspAudioElement.addEventListener("input", handleAudioControlDrag);
 
-        holoStream.postUpdateFunctions.push({
-          update: () => {
-            handleHoloStreamUpdate("videoPlayer", "hsp-control-progress", "hsp-time-container");
-          }
-        });
+        let hspSeekElement = document.getElementById("hsp-control-seek");
+        /* always ensure the seek element defaults to start */
+        hspSeekElement.value = 0;
+        /* respond to drag events on the seek input */
+        hspSeekElement.addEventListener("input", handleSeekDrag);
+
         document.onfullscreenchange = updateHoloStreamCanvasAfterParentSizeChange;
       }
-
-    </script>
-    <div>
-      <p>
-        Sample of how to use custom html controls with the HoloStream Player.
-      </p>
-    </div>
-    <div class="arc-grid">
-      <div class="arc-grid-cell">
-        <p>This is a sample of an embedded player with a custom UI</p>
-      </div>
-      <div class = "arc-grid-cell">
-          <div class="hsp-player-container">
-              <div id="hsp-viewport-container" class="hsp-viewport-container">
-              </div>
-              <div class="hsp-controls-container">
-                  <div class = "hsp-controls-grid">
-                      <div class="hsp-play-container hsp-control-container" >
-                          <button class="hsp-control-play hsp-control" type="button" data-plyr="play" aria-label="Play" onclick="togglePlay('test')" width="18" height="18">
-                            <svg class = "hsp-control-icon-visible hsp-control-play-icon hsp-control-icon" width="18" height="18" role="presentation" focusable="false">
-                              <path d="M15.562 8.1L3.87.225c-.818-.562-1.87 0-1.87.9v15.75c0 .9 1.052 1.462 1.87.9L15.563 9.9c.584-.45.584-1.35 0-1.8z"></path>
-                            </svg>
-                            <svg class = "hsp-control-icon-hidden hsp-control-pause-icon hsp-control-icon" width="18" height="18" role="presentation" focusable="false">
-                              <path d="M6 1H3c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h3c.6 0 1-.4 1-1V2c0-.6-.4-1-1-1zm6 0c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h3c.6 0 1-.4 1-1V2c0-.6-.4-1-1-1h-3z"></path>
-                            </svg>
-                          </button>
+ </script>
+<h1 align="center">Sample Volumetric Video Player with HTML Controls</h1>
+<p>
+  This page illustrates a simple instance of the HoloStream player where the controls are all implemented using standard html inputs.
+</p>
+ <!-- standard three column layout -->
+ <div class="arc-grid">
+   <div class="arc-grid-cell">
+          <p>
+            In this example the HoloStream player is placed in the middle column of a traditional 3 column layout. The left column is used for this text description. The middle column contains a "HoloStream Player" that is composed of a div containing the three.js canvas used for rendering and a div containting the controls.
+          </p>
+          <p>This demo consists of three components
+            <ol>
+              <li>hcp-custom-ui.html -- this html page that constructs the demo</li>
+              <li>hcp-custom-ui.css -- all the css styling for the demo</li>
+              <li>hcp-controls.js -- some javascript functions used to connect the player and the html controls</li>
+              <li>hcp-scene-utils.js -- helpful 3.js code for initializing the 3.js environment </li>
+          </ol></p>
+          <p>
+            To test this demo on a local machine open a terminal in the holostream-custom-ui folder and run: python python/SimpleServer.py
+            You will then be able to access the host with: <br></br><br>http://localhost:8000/hsp-custom-ui.html</br>
+          </p>
+   </div>
+   <div class="arc-grid-cell">
+        <!-- the main div containing the holostream three.js canvas (the viewport) and the html controls used for user control -->
+        <div class="hsp-player">
+            <!-- the div that the holostream instance will automatically add a three.js camera inside of -->
+            <div class="hsp-viewport-container" id = "hsp-viewport-container"></div>
+            <div class="hsp-controls-container">
+              <div class="hsp-controls-grid">
+                <div class="hsp-control-container">
+                   <button class = "hsp-play-control hsp-control" type="button" onclick="togglePlay()">
+                    <svg class="hsp-control-play-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                      <use xlink:href="/img/hsp-controls/plyr-play.svg#plyr-play"></use>
+                    </svg>
+                    <svg class="hsp-hide-element hsp-control-pause-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                      <use xlink:href="/img/hsp-controls/plyr-pause.svg#plyr-pause"></use>
+                    </svg>
+                  </button>
+                </div>
+                <div class="hsp-control-container">
+                  <input type="range" class="hsp-control-seek hsp-control" id="hsp-control-seek" min="0" max="1" step="0.05" value="0">
+                </div>
+                <div class="hsp-time-container hsp-control-container" id="hsp-time-container">-00:00</div>
+                <div class="hsp-control-container">
+                  <div class="hsp-audio-grid">
+                    <div class="hsp-audio-grid-cell">
+                      <div class="hsp-control-container">
+                        <button class = "hsp-audio-enable-control hsp-control" type="button" onclick="toggleAudioEnabled()">
+                          <svg class="hsp-control-audio-enabled-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                            <use xlink:href="/img/hsp-controls/plyr-audio-enabled.svg#plyr-audio-enabled"></use>
+                          </svg>
+                          <svg class="hsp-hide-element hsp-control-audio-disabled-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                            <use xlink:href="/img/hsp-controls/plyr-audio-disabled.svg#plyr-audio-disabled"></use>
+                          </svg>
+                        </button>
                       </div>
-                      <div class="hsp-progress-container hsp-control-container">
-                        <input type="range" class="hsp-control-progress hsp-control" id="hsp-control-progress" min="0" max="1" step="0.05" value="0">
+                    </div>
+                    <div class="hsp-audio-grid-cell">
+                      <div class="hsp-control-container">
+                        <input type="range" min=0 max=1 step=0.05 value=.5 autocomplete="off" role="slider"
+                               aria-label="Volume" aria-valuemin="0" aria-valuemax="100"
+                               aria-valuenow="55.00000000000001"  style="--value:55.00000000000001%;"
+                               aria-valuetext="55.0%" class="hsp-control-volume hsp-control"
+                               id="hsp-control-volume">
                       </div>
-                      <div class="hsp-time-container hsp-control-container" id="hsp-time-container">
-                        -00:10
-                      </div>
-                      <div class="hsp-audio-container hsp-control-container">
-                        <div class="hsp-audio-grid">
-                          <div class="hsp-audio-grid-cell" width="18px">
-                            <button class="hsp-control-audio hsp-control" type="button" onclick="toggleAudioMuted('test')" width="18" height="18">
-                              <svg class="hsp-control-icon-visible hsp-control-audio-icon hsp-control-icon" width="18" height="18">
-                                <path d="M15.6 3.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4C15.4 5.9 16 7.4 16 9c0 1.6-.6 3.1-1.8 4.3-.4.4-.4 1 0 1.4.2.2.5.3.7.3.3 0 .5-.1.7-.3C17.1 13.2 18 11.2 18 9s-.9-4.2-2.4-5.7z"></path>
-                                <path d="M11.282 5.282a.909.909 0 000 1.316c.735.735.995 1.458.995 2.402 0 .936-.425 1.917-.995 2.487a.909.909 0 000 1.316c.145.145.636.262 1.018.156a.725.725 0 00.298-.156C13.773 11.733 14.13 10.16 14.13 9c0-.17-.002-.34-.011-.51-.053-.992-.319-2.005-1.522-3.208a.909.909 0 00-1.316 0zm-7.496.726H.714C.286 6.008 0 6.31 0 6.76v4.512c0 .452.286.752.714.752h3.072l4.071 3.858c.5.3 1.143 0 1.143-.602V2.752c0-.601-.643-.977-1.143-.601L3.786 6.008z"></path>
-                              </svg>
-                              <svg class="hsp-control-icon-hidden hsp-control-audio-mute-icon hsp-control-icon" width="18" height="18">
-                                <path d="M12.4 12.5l2.1-2.1 2.1 2.1 1.4-1.4L15.9 9 18 6.9l-1.4-1.4-2.1 2.1-2.1-2.1L11 6.9 13.1 9 11 11.1zM3.786 6.008H.714C.286 6.008 0 6.31 0 6.76v4.512c0 .452.286.752.714.752h3.072l4.071 3.858c.5.3 1.143 0 1.143-.602V2.752c0-.601-.643-.977-1.143-.601L3.786 6.008z"></path>
-                              </svg>
-                            </button>
-                          </div>
-                          <div class="hsp-audio-grid-cell" width="30px">
-                            <input type="range" min=0 max=1 step=0.05 value=.5 autocomplete="off" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55.00000000000001"  style="--value:55.00000000000001%;" aria-valuetext="55.0%" class="hsp-control-volume hsp-control" id="hsp-control-volume" width="30px" >
-                          </div>
-                        </div>
-                      </div>
-                      <div class="hsp-fullscreen-container hsp-control-container">
-                            <button class="hsp-control-fullscreen hsp-control" onclick="toggleFullScreen('.hsp-player-container')">
-                              <svg width="18" height="18" class="hsp-control-icon-visible hsp-control-maximizeFullScreen-icon">
-                                <path d="M10 3h3.6l-4 4L11 8.4l4-4V8h2V1h-7zM7 9.6l-4 4V10H1v7h7v-2H4.4l4-4z"></path>
-                              </svg>
-                               <svg width="18" height="18" class="hsp-control-icon-hidden hsp-control-minimizeFullScreen-icon">
-                                  <path d="M1 12h3.6l-4 4L2 17.4l4-4V17h2v-7H1zM16 .6l-4 4V1h-2v7h7V6h-3.6l4-4z"></path>
-                              </svg>
-                            </button>
-                      </div>
+                    </div>
                   </div>
+                </div>
+                <div class="hsp-control-container">
+                  <!-- Toggles our player between embedded mode and full screen mode -->
+                  <button class = "hsp-fullscreen-control hsp-control" type="button" onclick="toggleFullScreen('.hsp-player')">
+                    <svg class="hsp-control-maximizeFullScreen-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                      <use xlink:href="/img/hsp-controls/plyr-enter-fullscreen.svg#plyr-enter-fullscreen"></use>
+                    </svg>
+                    <svg class="hsp-hide-element hsp-control-minimizeFullScreen-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                      <use xlink:href="/img/hsp-controls/plyr-exit-fullscreen.svg#plyr-exit-fullscreen"></use>
+                    </svg>
+                  </button>
+                </div>
               </div>
-          </div>
-      </div>
-      <div class="arc-grid-cell">
-        <p>
-          A few notes on the inputs:
-        </p>
-      </div>
-    </div>
-  </body>
+            </div>
+        </div>
+   </div>
+   <div class="arc-grid-cell">
+       <p>
+       This example has been tested on the following browsers:
+       <ul>
+         <li>Windows:</li>
+         <ul>
+           <li>Firefox</li>
+           <li>Chrome</li>
+           <li>Microsoft Edge</li>
+           <li>Opera</li>
+         </ul>
+            <li>OSX:</li>
+            <ul>Not yet</ul>
+         </p>
+     <h3>Known Issues</h3>
+      <ui>
+        <li>The toggle full screen button takes the top level player element full screen but the canvas doesn't expand to fill. Working on a fix.</li>
+        <li>The volume control slider in chrome and edge has the same color on either side of the thumb control</li>
+        <li>Need to slightly tweek the styling on the color and thickness of the slider controls</li>
+       </ul>
+   </div>
+ </div>
+
+</body>
 </html>
