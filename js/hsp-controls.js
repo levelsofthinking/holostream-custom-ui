@@ -170,3 +170,25 @@ function toggleVisibility(elementToShow, elementToHide)
    elementToShow.classList.remove('hsp-hide-element');
    elementToShow.classList.add('hsp-display-element');
 }
+
+/*
+  On iOS, video elements will not autoplay unless they are muted or the user interacts with the page, to work around
+  we have to force mute the video element, play it, then pause it unmute the audio
+ */
+function initIOS()
+{
+  const iphoneRegEx = /iPhone||iPad/;
+  const mobileRexEx = /Mobile/;
+
+  const isMobileIOS = iphoneRegEx.test(navigator.userAgent) && mobileRexEx.test(navigator.userAgent);
+
+  if (!isMobileIOS) {
+    return;
+  }
+
+  const videoElement = document.getElementById("videoPlayer");
+  videoElement.muted = true;
+  videoElement.play();
+  videoElement.pause();
+  videoElement.muted = false;
+}
