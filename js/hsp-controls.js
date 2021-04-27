@@ -7,7 +7,10 @@ function handleSeekDrag()
 {
   let videoPlayer = document.getElementById("videoPlayer");
   let seekElem = document.getElementById("hsp-control-seek");
-  videoPlayer.currentTime = seekElem.value;
+  const seekPercent = (seekElem.value-seekElem.min)/(seekElem.max-seekElem.min);
+  // holostream.handleSeek has extra error checkin inside of the function to help prevent
+  // mesh texture de-synchronization and should be used over directly advancing the video player.
+  holoStream.handleSeek(seekPercent);
 }
 
 /* because chrome doesn't support styling input sliders we use a javascript to style the background of the slider */
@@ -75,11 +78,13 @@ function toggleAudioEnabled(hspPlayer)
   const audioEnabledStyle = getComputedStyle(audioEnabledIcon);
   if (audioEnabledStyle['visibility'] == "visible") {
     hspCurrentAudioVolume = volumeControl.value;
+    videoPlayer.muted = true;
     videoPlayer.volume = 0;
     volumeControl.value = 0;
     hspMute = true;
     toggleVisibility(audioDisabledIcon, audioEnabledIcon);
   } else {
+    videoPlayer.muted = false;
     videoPlayer.volume = hspCurrentAudioVolume;
     volumeControl.value = hspCurrentAudioVolume;
     toggleVisibility(audioEnabledIcon, audioDisabledIcon);
@@ -173,7 +178,8 @@ function toggleVisibility(elementToShow, elementToHide)
 
 /*
   On iOS, video elements will not autoplay unless they are muted or the user interacts with the page, to work around
-  we have to force mute the video element, play it, then pause it unmute the audio
+  we have to force mute the video element, play it, then pause it unmute the audio. This allows the 3d content to be
+  visible in the browser.
  */
 function initIOS()
 {
