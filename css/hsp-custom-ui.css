@@ -360,5 +360,104 @@ The hsp player is the canvas + the controller,
   visibility: visible;
 }
 
+/********************/
+/*** Page Styling ***/
+/********************/
 
+body {
+    background-color: #000000;
+    background-image: url('/img/holostream-splash.png');
+    background-size: cover;
+    padding: 0% 5% 0%;
+    color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 200;
+}
 
+p {
+    padding: 5px;
+    margin: 5px;
+}
+
+.inset {
+    padding: 5px;
+    margin: 5px;
+}
+
+h3 {
+    padding: 5px;
+    margin: 5px;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+#ProfileContainer {
+}
+
+#ClipTitle {
+  font-size: 1rem;
+}
+
+#VideoID {
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.StatsSection {
+  margin-top: 0.5rem;
+}
+
+.ProfileButton{
+    color: #ffa306;
+    pointer-events: auto;
+    cursor: pointer;
+    background-color: transparent;
+    border: none !important;
+    outline: none;
+
+    transition: opacity 0.4s;
+
+    text-align: start;
+}
+
+.ProfileButton:hover{
+    cursor: pointer;
+    background-color: transparent;
+    border: none !important;
+
+    opacity: 70%;
+}
+
+.AutoSelectedProfileButton{
+    font-weight: bold;
+}
+
+.SelectedProfileButton{
+    font-weight: bold;
+    color: #ffa306;
+}
+
+.SelectedProfileButton:hover{
+    font-weight: bold;
+    opacity: 100%;
+    cursor: default;
+}
+
+.ProfileHeader{
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-right: 20px;
+    min-width: 6rem;
+}
+
+@media only screen and (max-width: 700px) {
+    #ClipTitle {
+        display: block;
+    }
+    #TitleSeparator {
+        display: none;
+    }
+}

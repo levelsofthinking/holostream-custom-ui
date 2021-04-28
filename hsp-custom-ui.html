@@ -1,44 +1,53 @@
 <!doctype html>
 <html class="no-js" lang="">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
 
-    <!-- Reset styling across browsers -->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css">
+  <!-- Reset styling across browsers -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
 
-    <!-- Some custom styling now that everything is reset across browsers -->
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
-    <link rel="stylesheet" href="css/arc-demo-style.css">
+  <!-- Some custom styling now that everything is reset across browsers -->
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+  <link rel="stylesheet" href="css/arc-demo-style.css">
 
 
 
-    <!-- HoloStream Includes -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js" type="application/javascript"></script>
-    <script src="https://holostream-static.akamaized.net/release/2020.4.4.1/remote/HoloStream-2020.4.4.1.min.js" type="application/javascript"></script>
+  <!-- HoloStream Includes -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js" type="application/javascript"></script>
+  <script src="https://holostream-static.akamaized.net/release/2020.4.4.1/remote/HoloStream-2020.4.4.1.min.js" type="application/javascript"></script>
+  <script src="js/main.js" type="application/javascript"></script>
 
-    <!-- scene management scripts -->
-    <script src="/js/hsp-scene-utils.js" type="application/javascript"></script>
-    <!-- specific scripts used to control the holostream player from the custom ui implmented in this page -->
-    <script src="/js/hsp-controls.js" type="application/javascript"></script>
+  <!-- scene management scripts -->
+  <script src="/js/hsp-scene-utils.js" type="application/javascript"></script>
+  <!-- specific scripts used to control the holostream player from the custom ui implmented in this page -->
+  <script src="/js/hsp-controls.js" type="application/javascript"></script>
 
-    <!-- Specific html styling for the UI of the HoloStream Player Elements -->
-    <link rel="stylesheet" href="css/hsp-custom-ui.css">
-    <!-- simple grid layout with css -->
-    <link rel="stylesheet" href="css/arc-simple-grid.css">
+  <!-- Specific html styling for the UI of the HoloStream Player Elements -->
+  <link rel="stylesheet" href="css/hsp-custom-ui.css">
+  <!-- simple grid layout with css -->
+  <link rel="stylesheet" href="css/arc-simple-grid.css">
 
-  </head>
+</head>
 <body onload="onPageLoad()">
- <script>
-      function onPageLoad() {
+<script>
+    function CopyToClipboard(id) {
+        var r = document.createRange();
+        r.selectNode(document.getElementById(id));
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(r);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+    }
+    function onPageLoad() {
         let holostreamOptions = {
           debugEnabled: false,
           targetContainerDivID: "hsp-viewport-container",
@@ -48,8 +57,38 @@
         holoStream = new HoloStream(holostreamOptions);
 
         initializeScene(holoStream);
+        holoStream.onURLOpened = onURLOpened;
+        holoStream.onQualityChanged = (currentProfile) => {
+            let profiles = holoStream.getQualityProfiles();
+            console.log(currentProfile);
+            let statsFps = document.getElementById("StatsFPS");
+            statsFps.innerHTML = currentProfile.timescale;
+            let statsQualityProfiles = document.getElementById("StatsQualityProfiles");
+            statsQualityProfiles.innerHTML = profiles.length;
+            let statsSize = document.getElementById("StatsSize");
+            statsSize.innerHTML = Math.floor(currentProfile.segments.reduce((total, segment) => total + segment.fileSize, 0)/1000000) + "mb";
+            onQualityChanged(currentProfile);
+        }
 
-        holoStream.openURL("https://holostream-dev.arcturus.studio/media/23f517e8-a10e-48ae-bc76-8ccde959937d/stream/dash/manifest.mpd");
+        let initialContentURL = "https://holostream-dev.arcturus.studio/media/790ee918-ba37-4a01-9f52-753a9ff2c013/stream/dash/manifest.mpd";
+        let url_string = window.location.href
+        let url = new URL(url_string);
+        let clipToLoad = url.searchParams.get("loadClip");
+        let clipTitle = url.searchParams.get("clipTitle");
+        if(clipTitle) {
+          let clipTitleSpan = document.getElementById("ClipTitle");
+          clipTitleSpan.innerHTML = clipTitle;
+        }
+        if (clipToLoad){
+            let videoIDSpan = document.getElementById("VideoID");
+            videoIDSpan.innerHTML = clipToLoad;
+            initialContentURL = "https://holostream-dev.arcturus.studio/media/" + clipToLoad + "/stream/dash/manifest.mpd";
+            let clipURLSpan = document.getElementById("ClipURL");
+            clipURLSpan.innerHTML = initialContentURL;
+        }
+        holoStream.openURL(initialContentURL)
+
+        //holoStream.openURL("https://holostream-dev.arcturus.studio/media/23f517e8-a10e-48ae-bc76-8ccde959937d/stream/dash/manifest.mpd");
         /* add callback to the holoStream Render loop so that we know everytime a frame has advanced */
         holoStream.postUpdateFunctions.push({
           update: () => {
@@ -70,135 +109,97 @@
 
         document.onfullscreenchange = updateHoloStreamCanvasAfterParentSizeChange;
         initIOS();
-      }
- </script>
-<h1 align="center">Sample Volumetric Video Player with HTML Controls</h1>
-<p>
-  This page illustrates a simple instance of the HoloStream player where the controls are all implemented using standard html inputs.
-</p>
- <p>
-        To test this demo on a local machine open a terminal in the holostream-custom-ui folder and run: python pyserver.py
-        You will then be able to access the host at: http://localhost:8080/hsp-custom-ui.html
- </p>
- <!-- standard three column layout -->
- <div class="arc-grid">
-   <div class="arc-grid-cell">
-          <p>
-            In this example the HoloStream player is placed in the middle column of a traditional 3 column layout. The left column is used for this text description. The middle column contains a "HoloStream Player" that is composed of a div containing the three.js canvas used for rendering and a div containting the controls.
-          </p>
-          <p>This demo consists of four components
-            <ol>
-              <li>hcp-custom-ui.html -- this html page that constructs the demo</li>
-              <li>hcp-custom-ui.css -- all the css styling for the demo</li>
-              <li>hcp-controls.js -- some javascript functions used to connect the player and the html controls</li>
-              <li>hcp-scene-utils.js -- helpful 3.js code for initializing the 3.js environment </li>
-          </ol></p>
+    }
+</script>
 
+<div class="HeaderContainer" style="display: flex; flex-wrap: wrap; padding: 0.8rem 0rem 0rem;">
+   <div class="HeaderImage">
+       <a href=""><img src="https://holostream-static.akamaized.net/img/HoloStream.svg" style="height: 3rem; margin-right: 0.8rem;"></a>
    </div>
-   <div class="arc-grid-cell">
-        <!-- the main div containing the holostream three.js canvas (the viewport) and the html controls used for user control -->
-        <div class="hsp-player">
-            <!-- the div that the holostream instance will automatically add a three.js camera inside of -->
-            <div class="hsp-viewport-container" id = "hsp-viewport-container"></div>
-            <div class="hsp-controls-container">
-              <div class="hsp-controls-grid">
-                <div class="hsp-control-container">
-                   <button class = "hsp-play-control hsp-control" type="button" onclick="togglePlay()">
-                    <svg class="hsp-control-play-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
-                      <use xlink:href="/img/hsp-controls/plyr-play.svg#plyr-play"></use>
-                    </svg>
-                    <svg class="hsp-hide-element hsp-control-pause-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
-                      <use xlink:href="/img/hsp-controls/plyr-pause.svg#plyr-pause"></use>
-                    </svg>
-                  </button>
-                </div>
-                <div class="hsp-control-seek-container hsp-control-container">
-                  <input type="range" class="hsp-control-seek hsp-control" id="hsp-control-seek" min="0" max="1" step="0.05" value="0"
-                    oninput="updateProgressStyle(this)">
-                </div>
-                <div class="hsp-time-container hsp-control-container" id="hsp-time-container">-00:00</div>
-                <div class="hsp-control-container">
-                  <div class="hsp-audio-grid">
-                    <div class="hsp-audio-grid-cell">
-                      <div class="hsp-control-container">
-                        <button class = "hsp-audio-enable-control hsp-control" type="button" onclick="toggleAudioEnabled()">
-                          <svg class="hsp-control-audio-enabled-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
-                            <use xlink:href="/img/hsp-controls/plyr-audio-enabled.svg#plyr-audio-enabled"></use>
-                          </svg>
-                          <svg class="hsp-hide-element hsp-control-audio-disabled-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
-                            <use xlink:href="/img/hsp-controls/plyr-audio-disabled.svg#plyr-audio-disabled"></use>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="hsp-audio-grid-cell">
-                      <div class="hsp-control-volume-container hsp-control-container">
-                        <input type="range" min=0 max=1 step=0.05 value=.5 autocomplete="off" role="slider"
-                               aria-label="Volume" aria-valuemin="0" aria-valuemax="100"
-                               aria-valuenow="55.00000000000001"  style="--value:55.00000000000001%;"
-                               aria-valuetext="55.0%" class="hsp-control-volume hsp-control"
-                               id="hsp-control-volume" oninput="updateProgressStyle(this)">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="hsp-control-container">
-                  <!-- Toggles our player between embedded mode and full screen mode -->
-                  <button class = "hsp-fullscreen-control hsp-control" type="button" onclick="toggleFullScreen('.hsp-player')">
-                    <svg class="hsp-control-maximizeFullScreen-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
-                      <use xlink:href="/img/hsp-controls/plyr-enter-fullscreen.svg#plyr-enter-fullscreen"></use>
-                    </svg>
-                    <svg class="hsp-hide-element hsp-control-minimizeFullScreen-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
-                      <use xlink:href="/img/hsp-controls/plyr-exit-fullscreen.svg#plyr-exit-fullscreen"></use>
-                    </svg>
-                  </button>
-                </div>
+  <div style="padding: 0.8rem 0.0rem; font-size: 1.5rem; min-width: 10rem;">User Preview</div>
+</div>
+
+<!-- the main div containing the holostream three.js canvas (the viewport) and the html controls used for user control -->
+<div class="hsp-player" style="width:100%;">
+    <!-- the div that the holostream instance will automatically add a three.js camera inside of -->
+    <div class="hsp-viewport-container" id = "hsp-viewport-container"></div>
+    <div class="hsp-controls-container">
+      <div class="hsp-controls-grid">
+        <div class="hsp-control-container">
+           <button class = "hsp-play-control hsp-control" type="button" onclick="togglePlay()">
+            <svg class="hsp-control-play-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+              <use xlink:href="/img/hsp-controls/plyr-play.svg#plyr-play"></use>
+            </svg>
+            <svg class="hsp-hide-element hsp-control-pause-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+              <use xlink:href="/img/hsp-controls/plyr-pause.svg#plyr-pause"></use>
+            </svg>
+          </button>
+        </div>
+        <div class="hsp-control-seek-container hsp-control-container">
+          <input type="range" class="hsp-control-seek hsp-control" id="hsp-control-seek" min="0" max="1" step="0.05" value="0"
+            oninput="updateProgressStyle(this)">
+        </div>
+        <div class="hsp-time-container hsp-control-container" id="hsp-time-container">-00:00</div>
+        <div class="hsp-control-container">
+          <div class="hsp-audio-grid">
+            <div class="hsp-audio-grid-cell">
+              <div class="hsp-control-container">
+                <button class = "hsp-audio-enable-control hsp-control" type="button" onclick="toggleAudioEnabled()">
+                  <svg class="hsp-control-audio-enabled-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                    <use xlink:href="/img/hsp-controls/plyr-audio-enabled.svg#plyr-audio-enabled"></use>
+                  </svg>
+                  <svg class="hsp-hide-element hsp-control-audio-disabled-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+                    <use xlink:href="/img/hsp-controls/plyr-audio-disabled.svg#plyr-audio-disabled"></use>
+                  </svg>
+                </button>
               </div>
             </div>
+            <div class="hsp-audio-grid-cell">
+              <div class="hsp-control-volume-container hsp-control-container">
+                <input type="range" min=0 max=1 step=0.05 value=.5 autocomplete="off" role="slider"
+                       aria-label="Volume" aria-valuemin="0" aria-valuemax="100"
+                       aria-valuenow="55.00000000000001"  style="--value:55.00000000000001%;"
+                       aria-valuetext="55.0%" class="hsp-control-volume hsp-control"
+                       id="hsp-control-volume" oninput="updateProgressStyle(this)">
+              </div>
+            </div>
+          </div>
         </div>
-   </div>
-   <div class="arc-grid-cell">
-     <h3>This example has been successfully tested on the following browsers:</h3>
-       <ul>
-         <li>Windows:</li>
-         <ul>
-           <li>Firefox</li>
-           <li>Chrome</li>
-           <li>Microsoft Edge</li>
-           <li>Opera</li>
-           </ul>
-           <li>OSX:</li>
-         <ul>
-            <li>Chrome</li>
-            <li>Firefox</li>
-            <li>Opera</li>
-           </ul>
-            <li>IOS:</li>
-            <ul>
-            <li>Chrome -- ipad</li>
-            <li>Chrome -- iphone</li>
-            <li>Safari -- ipad</li>
-            <li>Safari -- iphone</li>
-              </ul>
-          <li>Android</li>
-         <ul>
-           <li>Chrome</li>
-           <li>Opera</li>
-           </ul>
-       </ul>
-
-   </div>
- </div>
-
- <div class="inset">
-   <p>
-    <h3>Known Issues</h3>
-    <ul>
-        <li>Mac M1 with beta OS -- Safari, the mesh renders black safari version 14.0.3 macos big sur 11.2.1</li>
-        <li>Android -- FireFox Pixel 2 , the mesh renders black like the m1 error</li>
-        <li>Chrome -- iphone 12 -- controls are a little bit small so it can be difficult to hit them correctly, Todo: explore a larger UI on small screens</li>
-   </ul>
-  </p>
+        <div class="hsp-control-container">
+          <!-- Toggles our player between embedded mode and full screen mode -->
+          <button class = "hsp-fullscreen-control hsp-control" type="button" onclick="toggleFullScreen('.hsp-player')">
+            <svg class="hsp-control-maximizeFullScreen-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+              <use xlink:href="/img/hsp-controls/plyr-enter-fullscreen.svg#plyr-enter-fullscreen"></use>
+            </svg>
+            <svg class="hsp-hide-element hsp-control-minimizeFullScreen-icon hsp-icon" role="presentation" focusable="false" width="18" height="18">
+              <use xlink:href="/img/hsp-controls/plyr-exit-fullscreen.svg#plyr-exit-fullscreen"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
 </div>
+
+<div style="display: flex; flex-direction: row-reverse; flex-wrap: wrap;">
+  <div style="display: flex; flex-direction: row-reverse; flex-grow: 1; text-align: right; margin-top: 0.5rem; font-size: 0.8rem;">
+    <div style="float:right;" id="ProfileContainer">
+        <button id="AdaptiveButton" class="ProfileButton">Adaptive</button>
+    </div>
+    <div style="float:right;">Quality:</div>
+  </div>
+    <div style="flex-grow: 1; margin-top: 0.5rem; font-size: 0.6rem;">
+        <span id="ClipTitle">Untitled</span><span id="TitleSeparator" style="font-size:1.1rem;"> | </span><span id="VideoID">790ee918-ba37-4a01-9f52-753a9ff2c013</span>
+        <div>
+            <span id="ClipURL">https://holostream-dev.arcturus.studio/media/4a4d3479-24b7-4343-bd34-27e218817fab/stream/dash/manifest.mpd</span>
+            <a href="#" onclick="CopyToClipboard('ClipURL');return false;">&#x2398;</a>
+        </div>
+        <div class="StatsSection">
+            <div>FPS: <span id="StatsFPS"></span></div>
+            <div>Quality Profiles: <span id="StatsQualityProfiles"></span></div>
+            <div>Size: <span id="StatsSize"></span></div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
